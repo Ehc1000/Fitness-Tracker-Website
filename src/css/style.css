@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+:root {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: #f1f1f1;
+  background-color: #1a1a1a;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+}
+
+header {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid #2c5364;
+}
+
+header img {
+  width: 60px;
+  height: 60px;
+  margin-right: 1.5rem;
+  border-radius: 50%;
+  border: 2px solid #2c5364;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+main {
+  flex-grow: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+main img {
+  margin-top: 2rem;
+  max-width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+footer {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+  border-top: 1px solid #2c5364;
+  color: #ccc;
+}
+
+/* Form and Input styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+form input, form select, form button {
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #2c5364;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #f1f1f1;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+form input::placeholder {
+  color: #bbb;
+}
+
+form input:focus, form select:focus, form button:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.5);
+}
+
+form button {
+  background-color: #4a90e2;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  border: none;
+}
+
+form button:hover {
+  background-color: #357abd;
+}
+
+/* List styling */
+ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  max-width: 500px;
+}
+
+li {
+  background-color: rgba(255, 255, 255, 0.08);
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+li:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
