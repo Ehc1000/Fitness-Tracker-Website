@@ -67,3 +67,25 @@ export async function getCalorieLogs() {
         return calorieLog;
     });
 }
+
+export async function deleteWorkout(id) {
+  db.run('DELETE FROM workouts WHERE id = ?', [id]);
+}
+
+export async function updateWorkout(workout) {
+  db.run(
+    'UPDATE workouts SET type = ?, duration = ?, intensity = ?, date = ?, calories_burned = ? WHERE id = ?',
+    [workout.type, workout.duration, workout.intensity, workout.date, workout.calories_burned, workout.id]
+  );
+}
+
+export async function deleteCalorieLog(id) {
+  db.run('DELETE FROM calorie_logs WHERE id = ?', [id]);
+}
+
+export async function updateCalorieLog(calorieLog) {
+  db.run(
+    'UPDATE calorie_logs SET food_item = ?, calories = ?, date = ? WHERE id = ?',
+    [calorieLog.food_item, calorieLog.calories, calorieLog.date, calorieLog.id]
+  );
+}

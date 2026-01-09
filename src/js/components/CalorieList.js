@@ -7,8 +7,10 @@ export function CalorieList() {
 export function renderCalorieLogs(calorieLogs) {
   const calorieList = document.querySelector('#calorie-list');
   calorieList.innerHTML = calorieLogs.map(log => `
-    <li>
+    <li data-id="${log.id}">
       ${log.food_item} - ${log.calories} calories
+      <button class="edit">Edit</button>
+      <button class="delete">Delete</button>
     </li>
   `).join('');
 }

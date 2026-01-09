@@ -4,7 +4,7 @@ export function WorkoutForm() {
     <label for="type">Workout Type</label>
     <input type="text" id="type" name="type" required>
     <label for="duration">Duration (minutes)</label>
-    <input type="number" id="duration" name="duration" required>
+    <input type="number" id="duration" name="duration" required min="1">
     <label for="intensity">Intensity</label>
     <select id="intensity" name="intensity" required>
       <option value="Low">Low</option>
@@ -12,7 +12,7 @@ export function WorkoutForm() {
       <option value="High">High</option>
     </select>
     <label for="weight">Your Weight (kg)</label>
-    <input type="number" id="weight" name="weight" required>
+    <input type="number" id="weight" name="weight" required min="1">
     <button type="submit">Add Workout</button>
   `;
   return form;
