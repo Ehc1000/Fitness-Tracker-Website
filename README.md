@@ -54,6 +54,8 @@ A JavaScript-based fitness tracking application developed with Vite, Chart.js, a
 │   │   └── main.js           # Main application entry point
 │   └── javascript.svg        # Placeholder image
 ├── index.html                # Main HTML file
+├── babel.config.js           # Babel configuration
+├── eslint.config.js          # ESLint configuration
 ├── package.json              # Project dependencies and scripts
 └── README.md                 # This file
 ```
@@ -95,6 +97,14 @@ npm test
 ## Code Style
 
 This project adheres to standard JavaScript (ES2022) conventions.
+
+### Linting
+
+This project uses ESLint to enforce code style and catch common errors. To run the linter, use:
+
+```bash
+npm run lint
+```
 
 ## Components
 
