@@ -10,8 +10,7 @@ import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
 
-const app = document.querySelector('#app');
-const charts = document.querySelector('#charts');
+
 
 async function main() {
   try {

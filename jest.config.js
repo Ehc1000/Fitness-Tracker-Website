@@ -2,5 +2,6 @@ export default {
   transform: {
     '^.+\\.jsx?$': 'babel-jest',
   },
-  extensionsToTreatAsEsm: ['.js'],
+  setupFilesAfterEnv: ['./jest.setup.js'],
+  testEnvironment: 'jsdom',
 };

@@ -3,7 +3,7 @@ import { getWorkouts, getCalorieLogs, initDB } from './services/db.js';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
-const charts = document.querySelector('#charts');
+
 
 async function main() {
   try {

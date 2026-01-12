@@ -1,17 +1,43 @@
 const API_KEY = 'DEMO_KEY';
-const API_URL = `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}&dataType=Branded`;
+const API_URL = `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${API_KEY}`;
+
+function getRelevantNutrient(nutrients, nutrientName, unitName) {
+  return nutrients.find(n => n.nutrientName === nutrientName && n.unitName === unitName);
+}
+
+function processFood(food) {
+  const nutrients = food.foodNutrients;
+  const calorieNutrient = getRelevantNutrient(nutrients, 'Energy', 'KCAL');
+  if (calorieNutrient) {
+    return calorieNutrient.value;
+  }
+  return null;
+}
 
 export async function getFoodCalories(foodName) {
-  const response = await fetch(`${API_URL}&query=${foodName}`);
-  const data = await response.json();
+  let response = await fetch(`${API_URL}&query=${foodName}&dataType=Foundation,SR Legacy`);
+  let data = await response.json();
 
   if (data.foods && data.foods.length > 0) {
-    const food = data.foods[0];
-    const nutrients = food.foodNutrients;
-    const calorieNutrient = nutrients.find(n => n.nutrientName === 'Energy' && n.unitName === 'KCAL');
-    if (calorieNutrient) {
-      return calorieNutrient.value;
+    for (const food of data.foods) {
+      const calories = processFood(food);
+      if (calories) {
+        return calories;
+      }
+    }
+  } else {
+    // If no results, try adding ", raw" to the query
+    response = await fetch(`${API_URL}&query=${foodName},%20raw&dataType=Foundation,SR Legacy`);
+    data = await response.json();
+    if (data.foods && data.foods.length > 0) {
+      for (const food of data.foods) {
+        const calories = processFood(food);
+        if (calories) {
+          return calories;
+        }
+      }
     }
   }
+
   return null;
 }
