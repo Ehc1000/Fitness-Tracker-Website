@@ -1,16 +1,56 @@
 import { CalorieForm } from './components/CalorieForm.js';
-import { CalorieList, renderCalorieLogs } from './components/CalorieList.js';
+import { CalorieList, renderCalorieLogs as originalRenderCalorieLogs } from './components/CalorieList.js';
 import { addCalorieLog, getCalorieLogs, initDB, deleteCalorieLog, updateCalorieLog } from './services/db.js';
 import { getFoodCalories } from './services/food.js';
 
 const app = document.querySelector('main');
 const loader = document.querySelector('.loader');
+let calorieLogs = [];
+
+function updateCalorieProgress() {
+  const calorieGoal = localStorage.getItem('calorieGoal') || 2000;
+  const currentCalories = calorieLogs
+    .filter(log => new Date(log.date).toDateString() === new Date().toDateString())
+    .reduce((total, log) => total + log.calories, 0);
+
+  document.getElementById('current-calories').textContent = currentCalories;
+  document.getElementById('calorie-goal').textContent = calorieGoal;
+
+  const progress = Math.min((currentCalories / calorieGoal) * 100, 100);
+  document.getElementById('calorie-progress-bar').style.width = `${progress}%`;
+}
+
+function renderCalorieLogs(logs) {
+  originalRenderCalorieLogs(logs);
+  updateCalorieProgress();
+}
+
+function loadCalorieGoal() {
+  const calorieGoal = localStorage.getItem('calorieGoal');
+  if (calorieGoal) {
+    document.getElementById('calorie-goal-input').value = calorieGoal;
+    updateCalorieProgress();
+  }
+}
 
 async function main() {
   loader.hidden = false;
   try {
     await initDB();
-    let calorieLogs = await getCalorieLogs();
+    calorieLogs = await getCalorieLogs();
+
+    const calorieGoalForm = document.getElementById('calorie-goal-form');
+    calorieGoalForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const goal = document.getElementById('calorie-goal-input').value;
+      if (goal && !isNaN(goal)) {
+        localStorage.setItem('calorieGoal', goal);
+        updateCalorieProgress();
+        alert('Calorie goal updated!');
+      } else {
+        alert('Please enter a valid number for the calorie goal.');
+      }
+    });
 
     const calorieForm = CalorieForm();
     app.appendChild(calorieForm);
@@ -19,6 +59,7 @@ async function main() {
     const calorieList = document.getElementById('calorie-list');
     const calorieInputContainer = document.getElementById('calorie-input-container');
     renderCalorieLogs(calorieLogs);
+    loadCalorieGoal();
 
     calorieList.addEventListener('click', async (event) => {
       const target = event.target;

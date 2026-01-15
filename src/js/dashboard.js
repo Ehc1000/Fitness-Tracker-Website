@@ -1,15 +1,41 @@
 import { ProgressCharts } from './components/ProgressCharts.js';
+import Quote from './components/Quote.js';
 import { getWorkouts, getCalorieLogs, initDB } from './services/db.js';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
+function updateCalorieProgressDashboard(calorieLogs) {
+  const calorieGoal = localStorage.getItem('calorieGoal') || 2000;
+  const currentCalories = calorieLogs
+    .filter(log => new Date(log.date).toDateString() === new Date().toDateString())
+    .reduce((total, log) => total + log.calories, 0);
 
+  const currentCaloriesEl = document.getElementById('current-calories-dashboard');
+  const calorieGoalEl = document.getElementById('calorie-goal-dashboard');
+  const progressBarEl = document.getElementById('calorie-progress-bar-dashboard');
+
+  if (currentCaloriesEl && calorieGoalEl && progressBarEl) {
+    currentCaloriesEl.textContent = currentCalories;
+    calorieGoalEl.textContent = calorieGoal;
+
+    const progress = Math.min((currentCalories / calorieGoal) * 100, 100);
+    progressBarEl.style.width = `${progress}%`;
+  }
+}
 
 async function main() {
   try {
     await initDB();
     const workouts = await getWorkouts();
     const calorieLogs = await getCalorieLogs();
+
+    // Quote of the day
+    const quote = new Quote();
+    const quoteElement = quote.render();
+    document.querySelector('main').prepend(quoteElement);
+
+    // Calorie progress
+    updateCalorieProgressDashboard(calorieLogs);
 
     // Charts
     const chartsContainer = document.querySelector('#charts');

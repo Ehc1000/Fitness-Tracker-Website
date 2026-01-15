@@ -20,6 +20,20 @@
       </ul>
     </nav>
     <main>
+      <div id="calorie-goal-container">
+        <h2>Daily Calorie Goal</h2>
+        <form id="calorie-goal-form">
+          <input type="number" id="calorie-goal-input" placeholder="Enter your daily calorie goal" />
+          <button type="submit">Set Goal</button>
+        </form>
+        <div id="calorie-progress-container">
+          <h3>Today's Progress</h3>
+          <p><span id="current-calories">0</span> / <span id="calorie-goal">2000</span> kcal</p>
+          <div id="calorie-progress-bar-container">
+            <div id="calorie-progress-bar"></div>
+          </div>
+        </div>
+      </div>
       <div class="loader"></div>
     </main>
     <footer>
