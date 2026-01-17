@@ -21,11 +21,18 @@
       </ul>
     </nav>
     <main>
-      <div id="calorie-progress-container-dashboard">
-        <h2>Today's Calorie Intake</h2>
-        <p><span id="current-calories-dashboard">0</span> / <span id="calorie-goal-dashboard">2000</span> kcal</p>
-        <div id="calorie-progress-bar-container-dashboard">
-          <div id="calorie-progress-bar-dashboard"></div>
+      <div id="calorie-tracker-container">
+        <div id="calorie-progress-container-dashboard">
+          <h2>Today's Calorie Intake</h2>
+          <p><span id="current-calories-dashboard">0</span> / <span id="calorie-goal-dashboard">2000</span> kcal</p>
+          <div id="calorie-progress-bar-container-dashboard">
+            <div id="calorie-progress-bar-dashboard"></div>
+          </div>
+        </div>
+        <div id="set-goal-container">
+          <label for="calorie-goal-input">Set New Goal:</label>
+          <input type="number" id="calorie-goal-input" placeholder="Enter new goal..." />
+          <button id="set-goal-btn">Set Goal</button>
         </div>
       </div>
       <div id="charts"></div>

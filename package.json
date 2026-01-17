@@ -19,6 +19,7 @@
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.2.0",
     "jest-fetch-mock": "^3.0.3",
+    "jest-localstorage-mock": "^2.4.26",
     "vite": "npm:rolldown-vite@7.2.5"
   },
   "overrides": {
@@ -26,6 +27,7 @@
   },
   "dependencies": {
     "chart.js": "^4.5.1",
-    "sql.js": "^1.13.0"
+    "sql.js": "^1.13.0",
+    "text-encoding": "^0.7.0"
   }
 }

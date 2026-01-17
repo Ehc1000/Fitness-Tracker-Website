@@ -4,7 +4,7 @@ import { getWorkouts, getCalorieLogs, initDB } from './services/db.js';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
-function updateCalorieProgressDashboard(calorieLogs) {
+export function updateCalorieProgressDashboard(calorieLogs) {
   const calorieGoal = localStorage.getItem('calorieGoal') || 2000;
   const currentCalories = calorieLogs
     .filter(log => new Date(log.date).toDateString() === new Date().toDateString())
@@ -23,7 +23,7 @@ function updateCalorieProgressDashboard(calorieLogs) {
   }
 }
 
-async function main() {
+export async function main() {
   try {
     await initDB();
     const workouts = await getWorkouts();
@@ -47,6 +47,15 @@ async function main() {
       renderCaloriesBurnedChart(workouts);
       renderCalorieIntakeChart(calorieLogs);
     }
+    document.getElementById('set-goal-btn').addEventListener('click', async () => {
+      const newGoal = document.getElementById('calorie-goal-input').value;
+      if (newGoal) {
+        localStorage.setItem('calorieGoal', newGoal);
+        const calorieLogs = await getCalorieLogs();
+        updateCalorieProgressDashboard(calorieLogs);
+        document.getElementById('calorie-goal-input').value = '';
+      }
+    });
   } catch (err) {
     console.error(err);
     alert('An error occurred. Check the console for details.');
@@ -54,7 +63,7 @@ async function main() {
 }
 
 let caloriesBurnedChart;
-function renderCaloriesBurnedChart(workouts) {
+export function renderCaloriesBurnedChart(workouts) {
   const ctx = document.getElementById('caloriesBurnedChart').getContext('2d');
   const labels = workouts.map(w => `${new Date(w.date).toLocaleDateString()} - ${w.type}`);
   const data = workouts.map(w => w.calories_burned);
@@ -79,7 +88,7 @@ function renderCaloriesBurnedChart(workouts) {
 }
 
 let calorieIntakeChart;
-function renderCalorieIntakeChart(calorieLogs) {
+export function renderCalorieIntakeChart(calorieLogs) {
   const ctx = document.getElementById('calorieIntakeChart').getContext('2d');
   const labels = calorieLogs.map(l => `${new Date(l.date).toLocaleDateString()} - ${l.food_item}`);
   const data = calorieLogs.map(l => l.calories);
@@ -103,6 +112,6 @@ function renderCalorieIntakeChart(calorieLogs) {
   });
 }
 
-main();
-
-window.addEventListener('pageshow', main);
+window.addEventListener('DOMContentLoaded', async () => {
+  await main();
+});
