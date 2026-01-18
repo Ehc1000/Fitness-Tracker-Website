@@ -2,6 +2,7 @@ import { ProgressCharts } from './components/ProgressCharts.js';
 import Quote from './components/Quote.js';
 import { getWorkouts, getCalorieLogs, initDB } from './services/db.js';
 import { Chart, registerables } from 'chart.js';
+import ChatWidget from './components/ChatWidget.js';
 Chart.register(...registerables);
 
 export function updateCalorieProgressDashboard(calorieLogs) {
@@ -24,10 +25,14 @@ export function updateCalorieProgressDashboard(calorieLogs) {
 }
 
 export async function main() {
+  console.log('Main function started');
   try {
     await initDB();
+    console.log('DB initialized');
     const workouts = await getWorkouts();
     const calorieLogs = await getCalorieLogs();
+    console.log('Workouts and calorie logs fetched', { workouts, calorieLogs });
+    new ChatWidget();
 
     // Quote of the day
     const quote = new Quote();
@@ -39,8 +44,10 @@ export async function main() {
 
     // Charts
     const chartsContainer = document.querySelector('#charts');
+    console.log('Charts container:', chartsContainer);
     if (chartsContainer) {
       if (!document.getElementById('caloriesBurnedChart')) {
+        console.log('Chart canvas not found, creating it');
         const progressCharts = ProgressCharts();
         chartsContainer.appendChild(progressCharts);
       }
@@ -60,10 +67,12 @@ export async function main() {
     console.error(err);
     alert('An error occurred. Check the console for details.');
   }
+  console.log('Main function finished');
 }
 
 let caloriesBurnedChart;
 export function renderCaloriesBurnedChart(workouts) {
+  console.log('Rendering calories burned chart', workouts);
   const ctx = document.getElementById('caloriesBurnedChart').getContext('2d');
   const labels = workouts.map(w => `${new Date(w.date).toLocaleDateString()} - ${w.type}`);
   const data = workouts.map(w => w.calories_burned);
@@ -89,6 +98,7 @@ export function renderCaloriesBurnedChart(workouts) {
 
 let calorieIntakeChart;
 export function renderCalorieIntakeChart(calorieLogs) {
+  console.log('Rendering calorie intake chart', calorieLogs);
   const ctx = document.getElementById('calorieIntakeChart').getContext('2d');
   const labels = calorieLogs.map(l => `${new Date(l.date).toLocaleDateString()} - ${l.food_item}`);
   const data = calorieLogs.map(l => l.calories);

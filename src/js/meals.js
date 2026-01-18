@@ -2,6 +2,7 @@ import { CalorieForm } from './components/CalorieForm.js';
 import { CalorieList, renderCalorieLogs as originalRenderCalorieLogs } from './components/CalorieList.js';
 import { addCalorieLog, getCalorieLogs, initDB, deleteCalorieLog, updateCalorieLog } from './services/db.js';
 import { getFoodCalories } from './services/food.js';
+import ChatWidget from './components/ChatWidget.js';
 
 const app = document.querySelector('main');
 const loader = document.querySelector('.loader');
@@ -38,6 +39,7 @@ async function main() {
   try {
     await initDB();
     calorieLogs = await getCalorieLogs();
+    new ChatWidget();
 
     const calorieGoalForm = document.getElementById('calorie-goal-form');
     calorieGoalForm.addEventListener('submit', (event) => {
@@ -135,4 +137,5 @@ async function main() {
   }
 }
 
+main();
 main();

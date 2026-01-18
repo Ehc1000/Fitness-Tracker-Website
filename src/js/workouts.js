@@ -2,6 +2,7 @@ import { WorkoutForm } from './components/WorkoutForm.js';
 import { WorkoutList, renderWorkouts } from './components/WorkoutList.js';
 import { addWorkout, getWorkouts, initDB, deleteWorkout, updateWorkout } from './services/db.js';
 import { MET_VALUES } from './constants.js';
+import ChatWidget from './components/ChatWidget.js';
 
 const app = document.querySelector('main');
 const loader = document.querySelector('.loader');
@@ -11,6 +12,7 @@ async function main() {
   try {
     await initDB();
     let workouts = await getWorkouts();
+    new ChatWidget();
 
     const workoutForm = WorkoutForm();
     app.appendChild(workoutForm);
@@ -95,4 +97,5 @@ async function main() {
   }
 }
 
+main();
 main();
