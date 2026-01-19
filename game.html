@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/javascript.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fitness Game - Fitness Tracker</title>
+    <link rel="stylesheet" href="/src/css/style.css" />
+    <link rel="stylesheet" href="/src/css/game.css" />
+  </head>
+  <body>
+    <header>
+      <img src="/images/dumbbell.jpg" alt="Dumbbell" />
+      <h1>Fitness Tracker</h1>
+    </header>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="workouts.html">Workouts</a></li>
+        <li><a href="meals.html">Meals</a></li>
+        <li><a href="game.html">Game</a></li>
+      </ul>
+    </nav>
+    <main>
+      <h2>Healthy Food Catcher</h2>
+      <p>Click on the healthy food items before they disappear! Avoid the junk food.</p>
+      <div class="game-instructions">
+        <h3>Instructions:</h3>
+        <ul>
+          <li>Click on **green/blue** food items (healthy) to gain points.</li>
+          <li>Avoid clicking on **red/orange** food items (unhealthy) or you will lose points.</li>
+          <li>The game lasts 30 seconds. Try to get the highest score!</li>
+        </ul>
+      </div>
+      <div id="game-container">
+        <div id="score">Score: 0</div>
+        <div id="timer">Time: 30</div>
+        <div id="game-area"></div>
+      </div>
+    </main>
+    <footer>
+      <p>&copy; 2025 Fitness Tracker</p>
+    </footer>
+    <script type="module" src="/src/js/game.js"></script>
+  </body>
+</html>

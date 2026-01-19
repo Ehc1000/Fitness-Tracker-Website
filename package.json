@@ -4,7 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "start": "npm-run-all --parallel dev server",
     "dev": "vite",
+    "server": "node server.js",
     "build": "vite build",
     "preview": "vite preview",
     "test": "jest",
@@ -20,13 +22,12 @@
     "jest-environment-jsdom": "^30.2.0",
     "jest-fetch-mock": "^3.0.3",
     "jest-localstorage-mock": "^2.4.26",
-    "vite": "npm:rolldown-vite@7.2.5"
-  },
-  "overrides": {
-    "vite": "npm:rolldown-vite@7.2.5"
+    "npm-run-all": "^4.1.5",
+    "vite": "npm:rolldown-vite@^7.2.5"
   },
   "dependencies": {
     "chart.js": "^4.5.1",
+    "express": "^5.2.1",
     "sql.js": "^1.13.0",
     "text-encoding": "^0.7.0"
   }
