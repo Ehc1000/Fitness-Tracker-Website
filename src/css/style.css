@@ -361,9 +361,47 @@ li:hover {
   padding: 1rem;
   background-color: rgba(0, 0, 0, 0.2);
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.18);
 }
+
+.quick-replies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+.quick-replies button {
+  padding: 0.5rem 0.8rem;
+  border-radius: 15px;
+  border: 1px solid #4a90e2;
+  background-color: transparent;
+  color: #4a90e2;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.quick-replies button:hover {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.typing-indicator {
+  font-style: italic;
+  color: #ccc;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
 
 #chat-input {
   flex-grow: 1;

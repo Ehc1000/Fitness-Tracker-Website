@@ -25,7 +25,20 @@ function createFoodItem() {
   
   gameArea.appendChild(foodItem);
 
-  foodItem.addEventListener('click', () => {
+  setTimeout(() => {
+    foodItem.style.top = `${gameArea.clientHeight}px`;
+  }, 100);
+
+  setTimeout(() => {
+    if (foodItem.parentElement) {
+      foodItem.remove();
+    }
+  }, 1100);
+}
+
+gameArea.addEventListener('click', (event) => {
+  if (event.target.classList.contains('food-item')) {
+    const foodItem = event.target;
     if (foodItem.dataset.healthy === 'true') {
       score++;
     } else {
@@ -33,16 +46,8 @@ function createFoodItem() {
     }
     scoreDisplay.textContent = `Score: ${score}`;
     foodItem.remove();
-  });
-
-  setTimeout(() => {
-    foodItem.style.top = `${gameArea.clientHeight}px`;
-  }, 100);
-
-  setTimeout(() => {
-    foodItem.remove();
-  }, 2000);
-}
+  }
+});
 
 function startGame() {
   const gameInterval = setInterval(createFoodItem, 1000);
