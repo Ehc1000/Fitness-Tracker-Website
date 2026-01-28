@@ -24,6 +24,8 @@ A JavaScript-based fitness tracking application developed with Vite, Chart.js, a
 - **Workout Tracking:** Record workout sessions.
 - **Progress Visualization:** View fitness progress using interactive charts (powered by Chart.js).
 - **Local Data Persistence:** Utilizes SQL.js for storing data locally in a `database.sqlite` file.
+- **Gamified Experience:** An interactive game to make fitness fun.
+- **AI-Powered Chat:** Get fitness and nutrition advice from an AI-powered chatbot.
 
 ## Technologies Used
 
@@ -40,24 +42,22 @@ A JavaScript-based fitness tracking application developed with Vite, Chart.js, a
 
 ```
 .
-├── backend/                  # Placeholder for future backend implementation
-├── frontend/                 # Frontend application code (current project root)
-├── tests/                    # Unit tests for application components
-├── data/                     # Database files (e.g., database.sqlite, schema.sql)
-├── public/                   # Static assets (images, etc.)
-├── src/                      # Source code
-│   ├── css/                  # Stylesheets
-│   ├── js/                   # JavaScript modules
-│   │   ├── components/       # Reusable UI components
-│   │   ├── services/         # Data handling and utility services
-│   │   ├── constants.js      # Application constants
-│   │   └── main.js           # Main application entry point
-│   └── javascript.svg        # Placeholder image
-├── index.html                # Main HTML file
-├── babel.config.js           # Babel configuration
-├── eslint.config.js          # ESLint configuration
-├── package.json              # Project dependencies and scripts
-└── README.md                 # This file
+├── data/
+├── public/
+├── src/
+├── tests/
+├── .gitignore
+├── babel.config.js
+├── eslint.config.js
+├── index.html
+├── meals.html
+├── workouts.html
+├── game.html
+├── jest.config.js
+├── jest.setup.js
+├── package.json
+├── README.md
+└── vite.config.js
 ```
 
 ## Getting Started
@@ -115,6 +115,17 @@ The `src/js/components` directory contains the following UI components:
 - `ProgressCharts.js`: Renders charts to visualize fitness progress.
 - `WorkoutForm.js`: Form for logging workout sessions.
 - `WorkoutList.js`: Displays a list of logged workout entries.
+- `ChatWidget.js`: A chat widget for interacting with an AI-powered chatbot.
+- `Quote.js`: Displays a motivational quote.
+
+## Pages
+
+The application is divided into the following pages:
+
+- **Dashboard (`index.html`):** The main landing page, providing an overview of your fitness progress.
+- **Meals (`meals.html`):** Log and view your daily calorie intake.
+- **Workouts (`workouts.html`):** Record and track your workout sessions.
+- **Game (`game.html`):** An interactive game to make fitness fun.
 
 ## Services
 
@@ -122,6 +133,7 @@ The `src/js/services` directory contains modules for data management and other u
 
 - `db.js`: Handles interactions with the local SQLite database.
 - `food.js`: (Likely) provides functionality related to food data or calorie calculations.
+- `ai.js`: Provides an interface to an AI-powered chatbot.
 
 ## Contributing
 
