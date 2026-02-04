@@ -1,9 +1,14 @@
 const gameArea = document.getElementById('game-area');
 const scoreDisplay = document.getElementById('score');
 const timerDisplay = document.getElementById('timer');
+const highScoreDisplay = document.getElementById('high-score');
+const startButton = document.getElementById('start-button');
 
 let score = 0;
 let timeLeft = 30;
+let highScore = localStorage.getItem('highScore') || 0;
+
+highScoreDisplay.textContent = `High Score: ${highScore}`;
 
 const healthyFoods = ['apple', 'banana', 'broccoli', 'carrot', 'strawberry'];
 const unhealthyFoods = ['pizza', 'burger', 'fries', 'ice-cream', 'donut'];
@@ -33,7 +38,7 @@ function createFoodItem() {
     if (foodItem.parentElement) {
       foodItem.remove();
     }
-  }, 1100);
+  }, 2000);
 }
 
 gameArea.addEventListener('click', (event) => {
@@ -50,6 +55,12 @@ gameArea.addEventListener('click', (event) => {
 });
 
 function startGame() {
+  startButton.disabled = true;
+  score = 0;
+  timeLeft = 30;
+  scoreDisplay.textContent = `Score: ${score}`;
+  timerDisplay.textContent = `Time: ${timeLeft}`;
+
   const gameInterval = setInterval(createFoodItem, 1000);
   const timerInterval = setInterval(() => {
     timeLeft--;
@@ -58,12 +69,18 @@ function startGame() {
       clearInterval(gameInterval);
       clearInterval(timerInterval);
       alert(`Game over! Your score is ${score}`);
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('highScore', highScore);
+        highScoreDisplay.textContent = `High Score: ${highScore}`;
+      }
+      startButton.disabled = false;
     }
   }, 1000);
 }
 
 function main() {
-    startGame();
+    startButton.addEventListener('click', startGame);
 }
 
 main();
