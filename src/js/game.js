@@ -2,7 +2,6 @@ const gameArea = document.getElementById('game-area');
 const scoreDisplay = document.getElementById('score');
 const timerDisplay = document.getElementById('timer');
 const highScoreDisplay = document.getElementById('high-score');
-const startButton = document.getElementById('start-button');
 
 let score = 0;
 let timeLeft = 30;
@@ -55,7 +54,6 @@ gameArea.addEventListener('click', (event) => {
 });
 
 function startGame() {
-  startButton.disabled = true;
   score = 0;
   timeLeft = 30;
   scoreDisplay.textContent = `Score: ${score}`;
@@ -74,13 +72,12 @@ function startGame() {
         localStorage.setItem('highScore', highScore);
         highScoreDisplay.textContent = `High Score: ${highScore}`;
       }
-      startButton.disabled = false;
     }
   }, 1000);
 }
 
 function main() {
-    startButton.addEventListener('click', startGame);
+    startGame();
 }
 
 main();
