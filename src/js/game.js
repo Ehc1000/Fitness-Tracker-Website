@@ -2,10 +2,15 @@ const gameArea = document.getElementById('game-area');
 const scoreDisplay = document.getElementById('score');
 const timerDisplay = document.getElementById('timer');
 const highScoreDisplay = document.getElementById('high-score');
+const startButton = document.getElementById('start-button');
+const gameOverMessage = document.getElementById('game-over-message');
 
 let score = 0;
 let timeLeft = 30;
 let highScore = localStorage.getItem('highScore') || 0;
+let gameInterval = null;
+let timerInterval = null;
+let gameActive = false;
 
 highScoreDisplay.textContent = `High Score: ${highScore}`;
 
@@ -26,11 +31,13 @@ function createFoodItem() {
 
   foodItem.style.left = `${Math.random() * (gameArea.clientWidth - 40)}px`;
   foodItem.style.top = '-40px';
-  
+
   gameArea.appendChild(foodItem);
 
   setTimeout(() => {
-    foodItem.style.top = `${gameArea.clientHeight}px`;
+    if (gameActive) {
+      foodItem.style.top = `${gameArea.clientHeight}px`;
+    }
   }, 100);
 
   setTimeout(() => {
@@ -41,7 +48,7 @@ function createFoodItem() {
 }
 
 gameArea.addEventListener('click', (event) => {
-  if (event.target.classList.contains('food-item')) {
+  if (gameActive && event.target.classList.contains('food-item')) {
     const foodItem = event.target;
     if (foodItem.dataset.healthy === 'true') {
       score++;
@@ -53,31 +60,46 @@ gameArea.addEventListener('click', (event) => {
   }
 });
 
+function endGame() {
+  gameActive = false;
+  clearInterval(gameInterval);
+  clearInterval(timerInterval);
+  gameOverMessage.textContent = `Game over! Your score is ${score}`;
+  gameOverMessage.style.display = 'block';
+  if (score > highScore) {
+    highScore = score;
+    localStorage.setItem('highScore', highScore);
+    highScoreDisplay.textContent = `High Score: ${highScore}`;
+  }
+  startButton.textContent = 'Play Again?';
+  startButton.style.display = 'block';
+}
+
 function startGame() {
+  gameActive = true;
   score = 0;
   timeLeft = 30;
   scoreDisplay.textContent = `Score: ${score}`;
   timerDisplay.textContent = `Time: ${timeLeft}`;
+  
+  startButton.style.display = 'none';
+  gameOverMessage.style.display = 'none';
 
-  const gameInterval = setInterval(createFoodItem, 1000);
-  const timerInterval = setInterval(() => {
+  // Clear any existing food items
+  gameArea.innerHTML = '';
+
+  gameInterval = setInterval(createFoodItem, 1000);
+  timerInterval = setInterval(() => {
     timeLeft--;
     timerDisplay.textContent = `Time: ${timeLeft}`;
     if (timeLeft <= 0) {
-      clearInterval(gameInterval);
-      clearInterval(timerInterval);
-      alert(`Game over! Your score is ${score}`);
-      if (score > highScore) {
-        highScore = score;
-        localStorage.setItem('highScore', highScore);
-        highScoreDisplay.textContent = `High Score: ${highScore}`;
-      }
+      endGame();
     }
   }, 1000);
 }
 
 function main() {
-    startGame();
+  startButton.addEventListener('click', startGame);
 }
 
 main();
