@@ -89,6 +89,71 @@ async function main() {
         loader.hidden = true;
       }
     });
+
+    // Workout Timer Logic
+    let timerInterval;
+    let elapsedTime = 0;
+    let isRunning = false;
+
+    const minutesDisplay = document.getElementById('timer-minutes');
+    const secondsDisplay = document.getElementById('timer-seconds');
+    const startButton = document.getElementById('start-timer');
+    const pauseButton = document.getElementById('pause-timer');
+    const resetButton = document.getElementById('reset-timer');
+
+    function formatTime(seconds) {
+      const minutes = Math.floor(seconds / 60);
+      const remainingSeconds = seconds % 60;
+      return [minutes, remainingSeconds]
+        .map(num => num < 10 ? '0' + num : num)
+        .join(':');
+    }
+
+    function updateDisplay() {
+      const [minutes, seconds] = formatTime(elapsedTime).split(':');
+      minutesDisplay.textContent = minutes;
+      secondsDisplay.textContent = seconds;
+    }
+
+    function startTimer() {
+      if (!isRunning) {
+        isRunning = true;
+        timerInterval = setInterval(() => {
+          elapsedTime++;
+          updateDisplay();
+        }, 1000);
+        startButton.disabled = true;
+        pauseButton.disabled = false;
+        resetButton.disabled = false;
+      }
+    }
+
+    function pauseTimer() {
+      if (isRunning) {
+        isRunning = false;
+        clearInterval(timerInterval);
+        startButton.disabled = false;
+        pauseButton.disabled = true;
+      }
+    }
+
+    function resetTimer() {
+      pauseTimer(); // Stop the timer if it's running
+      elapsedTime = 0;
+      updateDisplay();
+      startButton.disabled = false;
+      pauseButton.disabled = true;
+      resetButton.disabled = true; // Initially disabled, enable after start
+    }
+
+    // Initial state
+    pauseButton.disabled = true;
+    resetButton.disabled = true;
+
+    startButton.addEventListener('click', startTimer);
+    pauseButton.addEventListener('click', pauseTimer);
+    resetButton.addEventListener('click', resetTimer);
+
   } catch (err) {
     console.error(err);
     alert('An error occurred. Check the console for details.');

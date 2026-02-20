@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Roboto+Mono&display=swap');
 
 :root {
   font-family: 'Roboto', sans-serif;
@@ -413,13 +413,58 @@ li:hover {
   font-size: 1rem;
 }
 
-#send-chat {
-  padding: 0.8rem 1rem;
-  border-radius: 8px;
-  border: none;
+/* Workout Timer Styles */
+.workout-timer-section {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  text-align: center;
+  width: 100%;
+  max-width: 500px;
+  margin-top: 2rem;
+}
+
+.workout-timer-section h2 {
+  color: #f1f1f1;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.timer-display {
+  font-size: 4rem;
+  font-weight: bold;
+  color: #4a90e2;
+  margin-bottom: 1.5rem;
+  font-family: 'Roboto Mono', monospace; /* A monospaced font for consistent digit width */
+}
+
+.timer-display span {
+  display: inline-block;
+  width: 60px; /* Ensure consistent width for digits */
+}
+
+.timer-controls button {
   background-color: #4a90e2;
   color: white;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
   cursor: pointer;
-  font-weight: bold;
+  margin: 0 0.5rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
+
+.timer-controls button:hover:not(:disabled) {
+  background-color: #357abd;
+  transform: translateY(-2px);
+}
+
+.timer-controls button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 
