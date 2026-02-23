@@ -13,11 +13,17 @@ export function updateCalorieProgressDashboard(calorieLogs) {
 
   const currentCaloriesEl = document.getElementById('current-calories-dashboard');
   const calorieGoalEl = document.getElementById('calorie-goal-dashboard');
+  const remainingCaloriesEl = document.getElementById('remaining-calories-dashboard');
   const progressBarEl = document.getElementById('calorie-progress-bar-dashboard');
 
   if (currentCaloriesEl && calorieGoalEl && progressBarEl) {
     currentCaloriesEl.textContent = currentCalories;
     calorieGoalEl.textContent = calorieGoal;
+
+    if (remainingCaloriesEl) {
+      const remaining = Math.max(0, calorieGoal - currentCalories);
+      remainingCaloriesEl.textContent = remaining;
+    }
 
     const progress = Math.min((currentCalories / calorieGoal) * 100, 100);
     progressBarEl.style.width = `${progress}%`;

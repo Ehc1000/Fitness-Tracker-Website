@@ -16,6 +16,11 @@ function updateCalorieProgress() {
 
   document.getElementById('current-calories').textContent = currentCalories;
   document.getElementById('calorie-goal').textContent = calorieGoal;
+  const remainingCaloriesEl = document.getElementById('remaining-calories');
+  if (remainingCaloriesEl) {
+    const remaining = Math.max(0, calorieGoal - currentCalories);
+    remainingCaloriesEl.textContent = remaining;
+  }
 
   const progress = Math.min((currentCalories / calorieGoal) * 100, 100);
   document.getElementById('calorie-progress-bar').style.width = `${progress}%`;
