@@ -30,6 +30,44 @@ export function updateCalorieProgressDashboard(calorieLogs) {
   }
 }
 
+export function initWaterTracker() {
+  const waterCountEl = document.getElementById('water-count');
+  const progressBarEl = document.getElementById('water-progress-bar');
+  const addBtn = document.getElementById('add-water-btn');
+  const removeBtn = document.getElementById('remove-water-btn');
+  const waterGoal = 8;
+
+  let waterData = JSON.parse(localStorage.getItem('waterIntake')) || { date: new Date().toDateString(), count: 0 };
+
+  // Reset if it's a new day
+  if (waterData.date !== new Date().toDateString()) {
+    waterData = { date: new Date().toDateString(), count: 0 };
+    localStorage.setItem('waterIntake', JSON.stringify(waterData));
+  }
+
+  const updateWaterUI = () => {
+    waterCountEl.textContent = waterData.count;
+    const progress = Math.min((waterData.count / waterGoal) * 100, 100);
+    progressBarEl.style.width = `${progress}%`;
+  };
+
+  addBtn.addEventListener('click', () => {
+    waterData.count++;
+    localStorage.setItem('waterIntake', JSON.stringify(waterData));
+    updateWaterUI();
+  });
+
+  removeBtn.addEventListener('click', () => {
+    if (waterData.count > 0) {
+      waterData.count--;
+      localStorage.setItem('waterIntake', JSON.stringify(waterData));
+      updateWaterUI();
+    }
+  });
+
+  updateWaterUI();
+}
+
 export async function main() {
   console.log('Main function started');
   try {
@@ -47,6 +85,9 @@ export async function main() {
 
     // Calorie progress
     updateCalorieProgressDashboard(calorieLogs);
+
+    // Water tracker
+    initWaterTracker();
 
     // Charts
     const chartsContainer = document.querySelector('#charts');

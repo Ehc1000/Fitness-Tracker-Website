@@ -467,4 +467,57 @@ li:hover {
   opacity: 0.6;
 }
 
+/* Water Tracker Styles */
+#water-tracker-container {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+}
+
+.water-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.water-controls button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.water-controls button:hover {
+  background-color: #357abd;
+}
+
+#water-progress-bar-container {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  height: 20px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+#water-progress-bar {
+  height: 100%;
+  width: 0%;
+  background-color: #3498db;
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+}
+
 
