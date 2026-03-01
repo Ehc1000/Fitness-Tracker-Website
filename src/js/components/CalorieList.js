@@ -22,7 +22,10 @@ export function CalorieList() {
         </div>
       </div>
     </div>
-    <h2>Calorie Log</h2>
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-bold">Calorie Log</h2>
+      <button id="clear-all-calories" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm hidden">Clear All</button>
+    </div>
     <ul id="calorie-list"></ul>
   `;
   return element;
@@ -30,6 +33,7 @@ export function CalorieList() {
 
 export function renderCalorieLogs(calorieLogs) {
   const calorieList = document.querySelector('#calorie-list');
+  const clearAllBtn = document.querySelector('#clear-all-calories');
   const totalCalories = calorieLogs.reduce((sum, log) => sum + log.calories, 0);
 
   document.querySelector('#total-calories').textContent = totalCalories;
@@ -37,6 +41,12 @@ export function renderCalorieLogs(calorieLogs) {
   document.querySelector('#total-protein').textContent = '0g';
   document.querySelector('#total-carbs').textContent = '0g';
   document.querySelector('#total-fat').textContent = '0g';
+
+  if (calorieLogs.length > 0) {
+    clearAllBtn.classList.remove('hidden');
+  } else {
+    clearAllBtn.classList.add('hidden');
+  }
 
   calorieList.innerHTML = calorieLogs.map(log => `
     <li data-id="${log.id}" class="flex justify-between items-center bg-gray-800 p-3 rounded-lg mb-2">

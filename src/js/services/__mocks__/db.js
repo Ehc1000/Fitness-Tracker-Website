@@ -1,3 +1,11 @@
 export const initDB = jest.fn().mockResolvedValue(true);
 export const getWorkouts = jest.fn().mockResolvedValue([]);
 export const getCalorieLogs = jest.fn().mockResolvedValue([]);
+export const addCalorieLog = jest.fn().mockResolvedValue();
+export const deleteCalorieLog = jest.fn().mockResolvedValue();
+export const clearAllCalorieLogs = jest.fn().mockResolvedValue();
+export const updateCalorieLog = jest.fn().mockResolvedValue();
+export const addWorkout = jest.fn().mockResolvedValue();
+export const deleteWorkout = jest.fn().mockResolvedValue();
+export const clearAllWorkouts = jest.fn().mockResolvedValue();
+export const updateWorkout = jest.fn().mockResolvedValue();

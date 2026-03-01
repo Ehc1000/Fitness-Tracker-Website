@@ -1,6 +1,6 @@
 import { CalorieForm } from './components/CalorieForm.js';
 import { CalorieList, renderCalorieLogs as originalRenderCalorieLogs } from './components/CalorieList.js';
-import { addCalorieLog, getCalorieLogs, initDB, deleteCalorieLog, updateCalorieLog } from './services/db.js';
+import { addCalorieLog, getCalorieLogs, initDB, deleteCalorieLog, updateCalorieLog, clearAllCalorieLogs } from './services/db.js';
 import { getFoodCalories } from './services/food.js';
 import ChatWidget from './components/ChatWidget.js';
 
@@ -65,8 +65,22 @@ async function main() {
     app.appendChild(calorieListContainer);
     const calorieList = document.getElementById('calorie-list');
     const calorieInputContainer = document.getElementById('calorie-input-container');
+    const clearAllBtn = document.getElementById('clear-all-calories');
     renderCalorieLogs(calorieLogs);
     loadCalorieGoal();
+
+    clearAllBtn.addEventListener('click', async () => {
+      if (confirm('Are you sure you want to clear all calorie logs for today?')) {
+        loader.hidden = false;
+        try {
+          await clearAllCalorieLogs();
+          calorieLogs = await getCalorieLogs();
+          renderCalorieLogs(calorieLogs);
+        } finally {
+          loader.hidden = true;
+        }
+      }
+    });
 
     calorieList.addEventListener('click', async (event) => {
       const target = event.target;

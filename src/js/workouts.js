@@ -1,6 +1,6 @@
 import { WorkoutForm } from './components/WorkoutForm.js';
 import { WorkoutList, renderWorkouts } from './components/WorkoutList.js';
-import { addWorkout, getWorkouts, initDB, deleteWorkout, updateWorkout } from './services/db.js';
+import { addWorkout, getWorkouts, initDB, deleteWorkout, updateWorkout, clearAllWorkouts } from './services/db.js';
 import { MET_VALUES } from './constants.js';
 import ChatWidget from './components/ChatWidget.js';
 
@@ -19,7 +19,21 @@ async function main() {
     const workoutListContainer = WorkoutList();
     app.appendChild(workoutListContainer);
     const workoutList = document.getElementById('workout-list');
+    const clearAllBtn = document.getElementById('clear-all-workouts');
     renderWorkouts(workouts);
+
+    clearAllBtn.addEventListener('click', async () => {
+      if (confirm('Are you sure you want to clear all workouts for today?')) {
+        loader.hidden = false;
+        try {
+          await clearAllWorkouts();
+          workouts = await getWorkouts();
+          renderWorkouts(workouts);
+        } finally {
+          loader.hidden = true;
+        }
+      }
+    });
 
     workoutList.addEventListener('click', async (event) => {
       const target = event.target;

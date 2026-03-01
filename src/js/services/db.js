@@ -72,6 +72,10 @@ export async function deleteWorkout(id) {
   db.run('DELETE FROM workouts WHERE id = ?', [id]);
 }
 
+export async function clearAllWorkouts() {
+  db.run('DELETE FROM workouts');
+}
+
 export async function updateWorkout(workout) {
   db.run(
     'UPDATE workouts SET type = ?, duration = ?, intensity = ?, date = ?, calories_burned = ? WHERE id = ?',
@@ -81,6 +85,10 @@ export async function updateWorkout(workout) {
 
 export async function deleteCalorieLog(id) {
   db.run('DELETE FROM calorie_logs WHERE id = ?', [id]);
+}
+
+export async function clearAllCalorieLogs() {
+  db.run('DELETE FROM calorie_logs');
 }
 
 export async function updateCalorieLog(calorieLog) {
