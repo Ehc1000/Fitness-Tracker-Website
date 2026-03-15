@@ -204,17 +204,54 @@ li:hover {
   border-radius: 10px;
   text-align: center;
   box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+#quote-content {
+  flex-grow: 1;
 }
 
 #quote-text {
   font-size: 1.2rem;
   font-style: italic;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 #quote-author {
   font-size: 1rem;
   font-weight: bold;
+}
+
+#quote-refresh-btn {
+  background: none;
+  border: none;
+  color: var(--secondary-color, #4CAF50);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+#quote-refresh-btn:hover {
+  color: var(--accent-color, #FFEB3B);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+#quote-refresh-btn.spinning {
+  animation: spin 0.5s linear;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 #calorie-goal-container, #calorie-progress-container-dashboard {
