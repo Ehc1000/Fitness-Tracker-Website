@@ -35,6 +35,7 @@ export function initWaterTracker() {
   const progressBarEl = document.getElementById('water-progress-bar');
   const addBtn = document.getElementById('add-water-btn');
   const removeBtn = document.getElementById('remove-water-btn');
+  const resetBtn = document.getElementById('reset-water-btn');
   const waterGoal = 8;
 
   let waterData = JSON.parse(localStorage.getItem('waterIntake')) || { date: new Date().toDateString(), count: 0 };
@@ -64,6 +65,14 @@ export function initWaterTracker() {
       updateWaterUI();
     }
   });
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      waterData.count = 0;
+      localStorage.setItem('waterIntake', JSON.stringify(waterData));
+      updateWaterUI();
+    });
+  }
 
   updateWaterUI();
 }
