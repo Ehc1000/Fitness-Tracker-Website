@@ -97,3 +97,25 @@ export async function updateCalorieLog(calorieLog) {
     [calorieLog.food_item, calorieLog.calories, calorieLog.date, calorieLog.id]
   );
 }
+
+export async function addWeightLog(weightLog) {
+  db.run(
+    'INSERT INTO weight_logs (user_id, weight, date) VALUES (?, ?, ?)',
+    [weightLog.user_id, weightLog.weight, weightLog.date]
+  );
+}
+
+export async function getWeightLogs() {
+    const res = db.exec('SELECT * FROM weight_logs ORDER BY date DESC');
+    if (res.length === 0) {
+        return [];
+    }
+    const columns = res[0].columns;
+    return res[0].values.map(row => {
+        const weightLog = {};
+        columns.forEach((col, i) => {
+            weightLog[col] = row[i];
+        });
+        return weightLog;
+    });
+}

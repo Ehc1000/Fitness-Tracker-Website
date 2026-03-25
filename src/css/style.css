@@ -557,4 +557,63 @@ li:hover {
   transition: width 0.5s ease-in-out;
 }
 
+/* Weight Tracker Styles */
+#weight-tracker-container {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  max-width: 800px;
+}
+
+#weight-tracker h2 {
+  margin-top: 0;
+  color: #f1f1f1;
+}
+
+.weight-input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+#weight-input {
+  flex-grow: 1;
+  padding: 0.8rem;
+  border: 1px solid #2c5364;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #f1f1f1;
+  border-radius: 8px;
+}
+
+#add-weight-btn {
+  padding: 0.8rem 1.5rem;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-weight: bold;
+}
+
+#add-weight-btn:hover {
+  background-color: #357abd;
+}
+
+#weight-list {
+  list-style: none;
+  padding: 0;
+}
+
+#weight-list li {
+  padding: 0.8rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
 

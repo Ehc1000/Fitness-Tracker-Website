@@ -3,6 +3,7 @@ import Quote from './components/Quote.js';
 import { getWorkouts, getCalorieLogs, initDB } from './services/db.js';
 import { Chart, registerables } from 'chart.js';
 import ChatWidget from './components/ChatWidget.js';
+import WeightTracker from './components/WeightTracker.js';
 Chart.register(...registerables);
 
 export function updateCalorieProgressDashboard(calorieLogs) {
@@ -97,6 +98,9 @@ export async function main() {
 
     // Water tracker
     initWaterTracker();
+
+    // Weight tracker
+    new WeightTracker('weight-tracker-container');
 
     // Charts
     const chartsContainer = document.querySelector('#charts');

@@ -34,3 +34,11 @@ CREATE TABLE IF NOT EXISTS goals (
   description TEXT,
   FOREIGN KEY(user_id) REFERENCES users(id)
 );
+
+CREATE TABLE IF NOT EXISTS weight_logs (
+  id INTEGER PRIMARY KEY,
+  user_id INTEGER,
+  weight REAL,
+  date DATETIME,
+  FOREIGN KEY(user_id) REFERENCES users(id)
+);
