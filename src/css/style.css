@@ -578,13 +578,27 @@ li:hover {
   margin-bottom: 1.5rem;
 }
 
-#weight-input {
+#weight-input, #height-input {
   flex-grow: 1;
   padding: 0.8rem;
   border: 1px solid #2c5364;
   background-color: rgba(255, 255, 255, 0.1);
   color: #f1f1f1;
   border-radius: 8px;
+}
+
+.bmi-info {
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: rgba(74, 144, 226, 0.1);
+  border-left: 4px solid #4a90e2;
+  border-radius: 4px;
+  font-size: 1.1rem;
+}
+
+.bmi-info strong {
+  color: #4a90e2;
+  font-size: 1.4rem;
 }
 
 #add-weight-btn {
