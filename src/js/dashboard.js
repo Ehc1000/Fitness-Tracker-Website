@@ -34,12 +34,25 @@ export function updateCalorieProgressDashboard(calorieLogs) {
 export function initWaterTracker() {
   const waterCountEl = document.getElementById('water-count');
   const progressBarEl = document.getElementById('water-progress-bar');
+  const waterGoalEl = document.getElementById('water-goal');
   const addBtn = document.getElementById('add-water-btn');
   const removeBtn = document.getElementById('remove-water-btn');
   const resetBtn = document.getElementById('reset-water-btn');
-  const waterGoal = 8;
+  const setGoalBtn = document.getElementById('set-water-goal-btn');
+  const goalInput = document.getElementById('water-goal-input');
 
+  if (!waterCountEl || !progressBarEl || !addBtn || !removeBtn) {
+    console.warn('Water tracker elements missing');
+    return;
+  }
+
+  let waterGoal = parseInt(localStorage.getItem('waterGoal')) || 8;
   let waterData = JSON.parse(localStorage.getItem('waterIntake')) || { date: new Date().toDateString(), count: 0 };
+
+  // Ensure waterData is in correct format
+  if (typeof waterData !== 'object' || waterData === null || !('count' in waterData)) {
+    waterData = { date: new Date().toDateString(), count: 0 };
+  }
 
   // Reset if it's a new day
   if (waterData.date !== new Date().toDateString()) {
@@ -49,6 +62,7 @@ export function initWaterTracker() {
 
   const updateWaterUI = () => {
     waterCountEl.textContent = waterData.count;
+    if (waterGoalEl) waterGoalEl.textContent = waterGoal;
     const progress = Math.min((waterData.count / waterGoal) * 100, 100);
     progressBarEl.style.width = `${progress}%`;
   };
@@ -75,6 +89,18 @@ export function initWaterTracker() {
     });
   }
 
+  if (setGoalBtn && goalInput) {
+    setGoalBtn.addEventListener('click', () => {
+      const newGoal = parseInt(goalInput.value);
+      if (newGoal && newGoal > 0) {
+        waterGoal = newGoal;
+        localStorage.setItem('waterGoal', waterGoal);
+        updateWaterUI();
+        goalInput.value = '';
+      }
+    });
+  }
+
   updateWaterUI();
 }
 
@@ -86,43 +112,61 @@ export async function main() {
     const workouts = await getWorkouts();
     const calorieLogs = await getCalorieLogs();
     console.log('Workouts and calorie logs fetched', { workouts, calorieLogs });
-    new ChatWidget();
+    
+    try {
+      new ChatWidget();
+    } catch (e) { console.error('Error initializing ChatWidget:', e); }
 
     // Quote of the day
-    const quote = new Quote();
-    const quoteElement = quote.render();
-    document.querySelector('main').prepend(quoteElement);
+    try {
+      const quote = new Quote();
+      const quoteElement = quote.render();
+      document.querySelector('main').prepend(quoteElement);
+    } catch (e) { console.error('Error initializing Quote:', e); }
 
     // Calorie progress
-    updateCalorieProgressDashboard(calorieLogs);
+    try {
+      updateCalorieProgressDashboard(calorieLogs);
+    } catch (e) { console.error('Error updating Calorie Progress:', e); }
 
     // Water tracker
-    initWaterTracker();
+    try {
+      initWaterTracker();
+    } catch (e) { console.error('Error initializing Water Tracker:', e); }
 
     // Weight tracker
-    new WeightTracker('weight-tracker-container');
+    try {
+      new WeightTracker('weight-tracker-container');
+    } catch (e) { console.error('Error initializing Weight Tracker:', e); }
 
     // Charts
-    const chartsContainer = document.querySelector('#charts');
-    console.log('Charts container:', chartsContainer);
-    if (chartsContainer) {
-      if (!document.getElementById('caloriesBurnedChart')) {
-        console.log('Chart canvas not found, creating it');
-        const progressCharts = ProgressCharts();
-        chartsContainer.appendChild(progressCharts);
+    try {
+      const chartsContainer = document.querySelector('#charts');
+      console.log('Charts container:', chartsContainer);
+      if (chartsContainer) {
+        if (!document.getElementById('caloriesBurnedChart')) {
+          console.log('Chart canvas not found, creating it');
+          const progressCharts = ProgressCharts();
+          chartsContainer.appendChild(progressCharts);
+        }
+        renderCaloriesBurnedChart(workouts);
+        renderCalorieIntakeChart(calorieLogs);
       }
-      renderCaloriesBurnedChart(workouts);
-      renderCalorieIntakeChart(calorieLogs);
+    } catch (e) { console.error('Error rendering Charts:', e); }
+
+    const setGoalBtn = document.getElementById('set-goal-btn');
+    if (setGoalBtn) {
+      setGoalBtn.addEventListener('click', async () => {
+        const goalInput = document.getElementById('calorie-goal-input');
+        const newGoal = goalInput ? goalInput.value : null;
+        if (newGoal) {
+          localStorage.setItem('calorieGoal', newGoal);
+          const calorieLogs = await getCalorieLogs();
+          updateCalorieProgressDashboard(calorieLogs);
+          goalInput.value = '';
+        }
+      });
     }
-    document.getElementById('set-goal-btn').addEventListener('click', async () => {
-      const newGoal = document.getElementById('calorie-goal-input').value;
-      if (newGoal) {
-        localStorage.setItem('calorieGoal', newGoal);
-        const calorieLogs = await getCalorieLogs();
-        updateCalorieProgressDashboard(calorieLogs);
-        document.getElementById('calorie-goal-input').value = '';
-      }
-    });
   } catch (err) {
     console.error(err);
     alert('An error occurred. Check the console for details.');

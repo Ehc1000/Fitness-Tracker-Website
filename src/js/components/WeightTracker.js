@@ -86,7 +86,7 @@ export default class WeightTracker {
   render() {
     this.container.innerHTML = `
       <div id="weight-tracker">
-        <h2>Weight Tracker & BMI</h2>
+        <h2>BMI Calculator & Weight Tracker</h2>
         <div class="weight-input-group">
           <input type="number" id="height-input" step="1" placeholder="Height (cm)" value="${this.height}" />
           <input type="number" id="weight-input" step="0.1" placeholder="Weight (kg)" />
