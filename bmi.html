@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/javascript.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Workouts - Fitness Tracker</title>
+    <title>BMI Calculator - Fitness Tracker</title>
     <link rel="stylesheet" href="/src/css/style.css" />
   </head>
   <body>
@@ -15,30 +15,18 @@
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="workouts.html" class="active">Workouts</a></li>
+        <li><a href="workouts.html">Workouts</a></li>
         <li><a href="meals.html">Meals</a></li>
-        <li><a href="bmi.html">BMI</a></li>
+        <li><a href="bmi.html" class="active">BMI</a></li>
         <li><a href="game.html">Game</a></li>
       </ul>
     </nav>
     <main>
-      <div class="loader"></div>
-
-      <section class="workout-timer-section">
-        <h2>Workout Timer</h2>
-        <div class="timer-display">
-          <span id="timer-minutes">00</span>:<span id="timer-seconds">00</span>
-        </div>
-        <div class="timer-controls">
-          <button id="start-timer">Start</button>
-          <button id="pause-timer">Pause</button>
-          <button id="reset-timer">Reset</button>
-        </div>
-      </section>
+      <div id="weight-tracker-container"></div>
     </main>
     <footer>
       <p>&copy; 2025 Fitness Tracker</p>
     </footer>
-    <script type="module" src="/src/js/workouts.js"></script>
+    <script type="module" src="/src/js/bmi.js"></script>
   </body>
 </html>

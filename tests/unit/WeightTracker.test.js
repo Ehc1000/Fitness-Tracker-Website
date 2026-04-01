@@ -29,15 +29,15 @@ describe('WeightTracker Component', () => {
   it('should store and retrieve height from localStorage', () => {
     const heightInput = document.getElementById('height-input');
     heightInput.value = '180';
-    heightInput.dispatchEvent(new Event('change'));
+    heightInput.dispatchEvent(new Event('input'));
 
     expect(localStorage.getItem('userHeight')).toBe('180');
     expect(weightTracker.height).toBe('180');
   });
 
   it('should calculate BMI correctly when weight and height are present', async () => {
+    document.getElementById('height-input').value = '175';
     getWeightLogs.mockResolvedValue([{ weight: 70, date: new Date().toISOString() }]);
-    weightTracker.height = '175';
     
     await weightTracker.calculateBMI();
     
@@ -48,8 +48,8 @@ describe('WeightTracker Component', () => {
   });
 
   it('should show underweight category for low BMI', async () => {
+    document.getElementById('height-input').value = '180';
     getWeightLogs.mockResolvedValue([{ weight: 50, date: new Date().toISOString() }]);
-    weightTracker.height = '180';
     
     await weightTracker.calculateBMI();
     
@@ -60,8 +60,8 @@ describe('WeightTracker Component', () => {
   });
 
   it('should show overweight category for high BMI', async () => {
+    document.getElementById('height-input').value = '180';
     getWeightLogs.mockResolvedValue([{ weight: 90, date: new Date().toISOString() }]);
-    weightTracker.height = '180';
     
     await weightTracker.calculateBMI();
     
@@ -69,5 +69,18 @@ describe('WeightTracker Component', () => {
     // BMI = 90 / (1.8 * 1.8) = 27.77...
     expect(bmiResult.innerHTML).toContain('27.8');
     expect(bmiResult.innerHTML).toContain('Overweight');
+  });
+
+  it('should calculate BMI from input even if no logs exist', async () => {
+    document.getElementById('height-input').value = '170';
+    document.getElementById('weight-input').value = '60';
+    getWeightLogs.mockResolvedValue([]);
+    
+    await weightTracker.calculateBMI();
+    
+    const bmiResult = document.getElementById('bmi-result');
+    // BMI = 60 / (1.7 * 1.7) = 20.76... -> 20.8
+    expect(bmiResult.innerHTML).toContain('20.8');
+    expect(bmiResult.innerHTML).toContain('Normal');
   });
 });

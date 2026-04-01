@@ -35,10 +35,14 @@ export default class WeightTracker {
           this.calculateBMI();
         }
       });
+
+      weightInput.addEventListener('input', () => {
+        this.calculateBMI();
+      });
     }
 
     if (heightInput) {
-      heightInput.addEventListener('change', () => {
+      heightInput.addEventListener('input', () => {
         this.height = heightInput.value;
         localStorage.setItem('userHeight', this.height);
         this.calculateBMI();
@@ -48,26 +52,38 @@ export default class WeightTracker {
 
   async calculateBMI() {
     const bmiResultEl = document.getElementById('bmi-result');
+    const heightInput = document.getElementById('height-input');
+    const weightInput = document.getElementById('weight-input');
+    
     if (!bmiResultEl) return;
 
-    const weights = await getWeightLogs();
-    if (weights.length > 0 && this.height) {
-      const latestWeight = weights[weights.length - 1].weight;
-      const heightInMeters = parseFloat(this.height) / 100;
-      if (heightInMeters > 0) {
-        const bmi = (latestWeight / (heightInMeters * heightInMeters)).toFixed(1);
-        let category = '';
-        if (bmi < 18.5) category = 'Underweight';
-        else if (bmi < 25) category = 'Normal';
-        else if (bmi < 30) category = 'Overweight';
-        else category = 'Obese';
-
-        bmiResultEl.innerHTML = `Your BMI: <strong>${bmi}</strong> (${category})`;
-      } else {
-        bmiResultEl.innerHTML = '';
-      }
+    let currentWeight = 0;
+    
+    // Try to get weight from input first (for live calculation)
+    if (weightInput && weightInput.value) {
+      currentWeight = parseFloat(weightInput.value);
     } else {
-      bmiResultEl.innerHTML = 'Enter height and log weight to see BMI';
+      // Fallback to latest logged weight
+      const weights = await getWeightLogs();
+      if (weights.length > 0) {
+        currentWeight = weights[0].weight; // Ordering is DESC in db.js
+      }
+    }
+
+    const currentHeight = heightInput ? heightInput.value : this.height;
+
+    if (currentWeight > 0 && currentHeight > 0) {
+      const heightInMeters = parseFloat(currentHeight) / 100;
+      const bmi = (currentWeight / (heightInMeters * heightInMeters)).toFixed(1);
+      let category = '';
+      if (bmi < 18.5) category = 'Underweight';
+      else if (bmi < 25) category = 'Normal';
+      else if (bmi < 30) category = 'Overweight';
+      else category = 'Obese';
+
+      bmiResultEl.innerHTML = `Your BMI: <strong>${bmi}</strong> (${category})`;
+    } else {
+      bmiResultEl.innerHTML = 'Enter height and weight to see BMI';
     }
   }
 

@@ -109,69 +109,75 @@ export async function main() {
   try {
     await initDB();
     console.log('DB initialized');
-    const workouts = await getWorkouts();
-    const calorieLogs = await getCalorieLogs();
-    console.log('Workouts and calorie logs fetched', { workouts, calorieLogs });
-    
-    try {
-      new ChatWidget();
-    } catch (e) { console.error('Error initializing ChatWidget:', e); }
-
-    // Quote of the day
-    try {
-      const quote = new Quote();
-      const quoteElement = quote.render();
-      document.querySelector('main').prepend(quoteElement);
-    } catch (e) { console.error('Error initializing Quote:', e); }
-
-    // Calorie progress
-    try {
-      updateCalorieProgressDashboard(calorieLogs);
-    } catch (e) { console.error('Error updating Calorie Progress:', e); }
-
-    // Water tracker
-    try {
-      initWaterTracker();
-    } catch (e) { console.error('Error initializing Water Tracker:', e); }
-
-    // Weight tracker
-    try {
-      new WeightTracker('weight-tracker-container');
-    } catch (e) { console.error('Error initializing Weight Tracker:', e); }
-
-    // Charts
-    try {
-      const chartsContainer = document.querySelector('#charts');
-      console.log('Charts container:', chartsContainer);
-      if (chartsContainer) {
-        if (!document.getElementById('caloriesBurnedChart')) {
-          console.log('Chart canvas not found, creating it');
-          const progressCharts = ProgressCharts();
-          chartsContainer.appendChild(progressCharts);
-        }
-        renderCaloriesBurnedChart(workouts);
-        renderCalorieIntakeChart(calorieLogs);
-      }
-    } catch (e) { console.error('Error rendering Charts:', e); }
-
-    const setGoalBtn = document.getElementById('set-goal-btn');
-    if (setGoalBtn) {
-      setGoalBtn.addEventListener('click', async () => {
-        const goalInput = document.getElementById('calorie-goal-input');
-        const newGoal = goalInput ? goalInput.value : null;
-        if (newGoal) {
-          localStorage.setItem('calorieGoal', newGoal);
-          const calorieLogs = await getCalorieLogs();
-          updateCalorieProgressDashboard(calorieLogs);
-          goalInput.value = '';
-        }
-      });
-    }
   } catch (err) {
-    console.error(err);
-    alert('An error occurred. Check the console for details.');
+    console.error('DB initialization failed:', err);
+    alert('Database failed to initialize. Some features may not work.');
   }
-  console.log('Main function finished');
+
+  let workouts = [];
+  try {
+    workouts = await getWorkouts();
+  } catch (e) { console.error('Error fetching workouts:', e); }
+
+  let calorieLogs = [];
+  try {
+    calorieLogs = await getCalorieLogs();
+  } catch (e) { console.error('Error fetching calorie logs:', e); }
+
+  console.log('Workouts and calorie logs fetched', { workouts, calorieLogs });
+  
+  try {
+    new ChatWidget();
+  } catch (e) { console.error('Error initializing ChatWidget:', e); }
+
+  // Quote of the day
+  try {
+    const quote = new Quote();
+    const quoteElement = quote.render();
+    document.querySelector('main').prepend(quoteElement);
+  } catch (e) { console.error('Error initializing Quote:', e); }
+
+  // Calorie progress
+  try {
+    updateCalorieProgressDashboard(calorieLogs);
+  } catch (e) { console.error('Error updating Calorie Progress:', e); }
+
+  // Water tracker
+  try {
+    initWaterTracker();
+  } catch (e) { console.error('Error initializing Water Tracker:', e); }
+
+  // Weight tracker
+  try {
+    new WeightTracker('weight-tracker-container');
+  } catch (e) { console.error('Error initializing Weight Tracker:', e); }
+
+  // Charts
+  try {
+    const chartsContainer = document.querySelector('#charts');
+    if (chartsContainer) {
+      if (!document.getElementById('caloriesBurnedChart')) {
+        const progressCharts = ProgressCharts();
+        chartsContainer.appendChild(progressCharts);
+      }
+      renderCaloriesBurnedChart(workouts);
+      renderCalorieIntakeChart(calorieLogs);
+    }
+  } catch (e) { console.error('Error rendering Charts:', e); }
+
+  const setGoalBtn = document.getElementById('set-goal-btn');
+  if (setGoalBtn) {
+    setGoalBtn.addEventListener('click', async () => {
+      const goalInput = document.getElementById('calorie-goal-input');
+      const newGoal = goalInput ? goalInput.value : null;
+      if (newGoal) {
+        localStorage.setItem('calorieGoal', newGoal);
+        const calorieLogs = await getCalorieLogs();
+        updateCalorieProgressDashboard(calorieLogs);
+        goalInput.value = '';
+      }
+    });
+  }
 }
 
 let caloriesBurnedChart;
