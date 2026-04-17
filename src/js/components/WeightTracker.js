@@ -11,9 +11,13 @@ export default class WeightTracker {
   }
 
   async init() {
-    this.updateWeightList();
-    this.attachEventListeners();
-    this.calculateBMI();
+    try {
+      await this.updateWeightList();
+      this.attachEventListeners();
+      await this.calculateBMI();
+    } catch (err) {
+      console.error('WeightTracker init error:', err);
+    }
   }
 
   attachEventListeners() {
@@ -25,14 +29,19 @@ export default class WeightTracker {
       addBtn.addEventListener('click', async () => {
         const weight = parseFloat(weightInput.value);
         if (!isNaN(weight)) {
-          await addWeightLog({
-            user_id: 1, // hardcoded for now
-            weight: weight,
-            date: new Date().toISOString()
-          });
-          weightInput.value = '';
-          this.updateWeightList();
-          this.calculateBMI();
+          try {
+            await addWeightLog({
+              user_id: 1, // hardcoded for now
+              weight: weight,
+              date: new Date().toISOString()
+            });
+            weightInput.value = '';
+            await this.updateWeightList();
+            await this.calculateBMI();
+          } catch (err) {
+            console.error('Error adding weight log:', err);
+            alert('Failed to log weight.');
+          }
         }
       });
 
@@ -59,31 +68,36 @@ export default class WeightTracker {
 
     let currentWeight = 0;
     
-    // Try to get weight from input first (for live calculation)
-    if (weightInput && weightInput.value) {
-      currentWeight = parseFloat(weightInput.value);
-    } else {
-      // Fallback to latest logged weight
-      const weights = await getWeightLogs();
-      if (weights.length > 0) {
-        currentWeight = weights[0].weight; // Ordering is DESC in db.js
+    try {
+      // Try to get weight from input first (for live calculation)
+      if (weightInput && weightInput.value) {
+        currentWeight = parseFloat(weightInput.value);
+      } else {
+        // Fallback to latest logged weight
+        const weights = await getWeightLogs();
+        if (weights.length > 0) {
+          currentWeight = weights[0].weight; // Ordering is DESC in db.js
+        }
       }
-    }
 
-    const currentHeight = heightInput ? heightInput.value : this.height;
+      const currentHeight = heightInput ? heightInput.value : this.height;
 
-    if (currentWeight > 0 && currentHeight > 0) {
-      const heightInMeters = parseFloat(currentHeight) / 100;
-      const bmi = (currentWeight / (heightInMeters * heightInMeters)).toFixed(1);
-      let category = '';
-      if (bmi < 18.5) category = 'Underweight';
-      else if (bmi < 25) category = 'Normal';
-      else if (bmi < 30) category = 'Overweight';
-      else category = 'Obese';
+      if (currentWeight > 0 && currentHeight > 0) {
+        const heightInMeters = parseFloat(currentHeight) / 100;
+        const bmi = (currentWeight / (heightInMeters * heightInMeters)).toFixed(1);
+        let category = '';
+        if (bmi < 18.5) category = 'Underweight';
+        else if (bmi < 25) category = 'Normal';
+        else if (bmi < 30) category = 'Overweight';
+        else category = 'Obese';
 
-      bmiResultEl.innerHTML = `Your BMI: <strong>${bmi}</strong> (${category})`;
-    } else {
-      bmiResultEl.innerHTML = 'Enter height and weight to see BMI';
+        bmiResultEl.innerHTML = `Your BMI: <strong>${bmi}</strong> (${category})`;
+      } else {
+        bmiResultEl.innerHTML = 'Enter height and weight to see BMI';
+      }
+    } catch (err) {
+      console.error('Error calculating BMI:', err);
+      bmiResultEl.innerHTML = 'Error calculating BMI';
     }
   }
 
@@ -91,12 +105,17 @@ export default class WeightTracker {
     const weightListEl = document.getElementById('weight-list');
     if (!weightListEl) return;
 
-    const weights = await getWeightLogs();
-    weightListEl.innerHTML = weights.map(w => `
-      <li>
-        ${new Date(w.date).toLocaleDateString()}: <strong>${w.weight} kg</strong>
-      </li>
-    `).join('');
+    try {
+      const weights = await getWeightLogs();
+      weightListEl.innerHTML = weights.map(w => `
+        <li>
+          ${new Date(w.date).toLocaleDateString()}: <strong>${w.weight} kg</strong>
+        </li>
+      `).join('');
+    } catch (err) {
+      console.error('Error updating weight list:', err);
+      weightListEl.innerHTML = '<li>Error loading weights</li>';
+    }
   }
 
   render() {
