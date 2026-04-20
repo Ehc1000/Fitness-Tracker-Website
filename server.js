@@ -50,21 +50,70 @@ function getRandomResponse(responses) {
   return responses[Math.floor(Math.random() * responses.length)];
 }
 
-function getLocalAIResponse(message) {
+function getLocalAIResponse(message, memories = [], history = [], stats = {}) {
+  // Check for memory-learning patterns
+  const nameMatch = message.match(/my name is ([\w\s]+)/i);
+  if (nameMatch) {
+    const name = nameMatch[1].trim();
+    return {
+      response: `Nice to meet you, ${name}! I've remembered your name.`,
+      remember: { key: 'name', value: name }
+    };
+  }
+
+  const preferenceMatch = message.match(/i (?:love|like|prefer) ([\w\s]+)/i);
+  if (preferenceMatch) {
+    const preference = preferenceMatch[1].trim();
+    return {
+      response: `I've noted that you like ${preference}. I'll use this to tailor my suggestions!`,
+      remember: { key: 'preference', value: preference }
+    };
+  }
+
+  // Check for progress-related questions
+  if (message.match(/how (?:am i doing|is my progress|are my stats)/i) || message.match(/summary/i)) {
+    const { workoutCount = 0, totalCaloriesBurned = 0, recentWorkout = 'none' } = stats;
+    let response = `You've completed ${workoutCount} workouts so far, burning a total of ${Math.round(totalCaloriesBurned)} calories. `;
+    if (recentWorkout !== 'none') {
+      response += `Your last workout was ${recentWorkout}. Keep it up!`;
+    } else {
+      response += `You haven't logged any workouts yet. Why not start today?`;
+    }
+    return { response };
+  }
+
+  // Use memories to personalize
+  const nameMemory = memories.find(m => m.key === 'name');
+  const greetingPrefix = nameMemory ? `Hello again, ${nameMemory.value}! ` : '';
+
   for (const category in knowledgeBase) {
     for (const pattern of knowledgeBase[category].patterns) {
       if (pattern.test(message)) {
-        return getRandomResponse(knowledgeBase[category].responses);
+        let response = getRandomResponse(knowledgeBase[category].responses);
+        if (category === 'greetings' && nameMemory) {
+          response = greetingPrefix + response;
+        }
+        return { response };
       }
     }
   }
-  return getRandomResponse(defaultResponses);
+
+  // Personalization for general questions if we have preferences
+  const preferences = memories.filter(m => m.key === 'preference').map(m => m.value);
+  if (preferences.length > 0 && (message.includes('suggest') || message.includes('what'))) {
+    const pref = getRandomResponse(preferences);
+    return { response: `Since you mentioned you like ${pref}, maybe you should try something related to that today!` };
+  }
+
+  return { response: getRandomResponse(defaultResponses) };
 }
 
 app.post('/api/chat', (req, res) => {
-  const userMessage = req.body.message;
-  const aiResponse = getLocalAIResponse(userMessage);
-  res.json({ response: aiResponse });
+  console.log('Incoming chat request:', req.body);
+  const { message, memories, history, stats } = req.body;
+  const result = getLocalAIResponse(message, memories, history, stats);
+  console.log('AI response:', result);
+  res.json(result);
 });
 
 app.listen(port, () => {

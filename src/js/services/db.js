@@ -119,3 +119,25 @@ export async function getWeightLogs() {
         return weightLog;
     });
 }
+
+export async function addUserMemory(userId, key, value) {
+  db.run(
+    'INSERT INTO user_memories (user_id, key, value) VALUES (?, ?, ?)',
+    [userId, key, value]
+  );
+}
+
+export async function getUserMemories(userId) {
+  const res = db.exec('SELECT * FROM user_memories WHERE user_id = ?', [userId]);
+  if (res.length === 0) {
+    return [];
+  }
+  const columns = res[0].columns;
+  return res[0].values.map(row => {
+    const memory = {};
+    columns.forEach((col, i) => {
+      memory[col] = row[i];
+    });
+    return memory;
+  });
+}

@@ -42,3 +42,11 @@ CREATE TABLE IF NOT EXISTS weight_logs (
   date DATETIME,
   FOREIGN KEY(user_id) REFERENCES users(id)
 );
+
+CREATE TABLE IF NOT EXISTS user_memories (
+  id INTEGER PRIMARY KEY,
+  user_id INTEGER,
+  key TEXT,
+  value TEXT,
+  FOREIGN KEY(user_id) REFERENCES users(id)
+);
