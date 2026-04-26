@@ -58,6 +58,19 @@
         </div>
         <p>Stay hydrated!</p>
       </div>
+      <div id="sleep-tracker-container">
+        <h2>Sleep Tracker</h2>
+        <div class="sleep-input-group" style="display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1rem;">
+          <input type="number" id="sleep-input" step="0.5" placeholder="Hours slept" style="width: 120px; padding: 0.5rem; border-radius: 8px; border: 1px solid #2c5364; background-color: rgba(255, 255, 255, 0.1); color: #f1f1f1;" />
+          <button id="add-sleep-btn" style="background-color: #4a90e2; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold;">Log Sleep</button>
+        </div>
+        <div id="sleep-progress-container" style="margin-top: 1rem;">
+          <p><span id="current-sleep">0</span> / <span id="sleep-goal">8</span> hours</p>
+          <div id="sleep-progress-bar-container" style="width: 100%; background-color: rgba(255, 255, 255, 0.1); border-radius: 10px; height: 20px; overflow: hidden;">
+            <div id="sleep-progress-bar" style="height: 100%; width: 0%; background-color: #9b59b6; border-radius: 10px; transition: width 0.5s ease-in-out;"></div>
+          </div>
+        </div>
+      </div>
       <div id="weight-tracker-container"></div>
       <div id="charts"></div>
     </main>

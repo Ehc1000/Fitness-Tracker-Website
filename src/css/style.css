@@ -505,7 +505,7 @@ li:hover {
 }
 
 /* Water Tracker Styles */
-#water-tracker-container {
+#water-tracker-container, #sleep-tracker-container {
   background-color: rgba(0, 0, 0, 0.2);
   padding: 1.5rem;
   border-radius: 10px;
@@ -515,7 +515,7 @@ li:hover {
   text-align: center;
 }
 
-.water-controls {
+.water-controls, .sleep-input-group {
   display: flex;
   justify-content: center;
   align-items: center;

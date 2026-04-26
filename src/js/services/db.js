@@ -120,6 +120,28 @@ export async function getWeightLogs() {
     });
 }
 
+export async function addSleepLog(sleepLog) {
+  db.run(
+    'INSERT INTO sleep_logs (user_id, duration, date) VALUES (?, ?, ?)',
+    [sleepLog.user_id, sleepLog.duration, sleepLog.date]
+  );
+}
+
+export async function getSleepLogs() {
+  const res = db.exec('SELECT * FROM sleep_logs ORDER BY date DESC');
+  if (res.length === 0) {
+    return [];
+  }
+  const columns = res[0].columns;
+  return res[0].values.map(row => {
+    const sleepLog = {};
+    columns.forEach((col, i) => {
+      sleepLog[col] = row[i];
+    });
+    return sleepLog;
+  });
+}
+
 export async function addUserMemory(userId, key, value) {
   db.run(
     'INSERT INTO user_memories (user_id, key, value) VALUES (?, ?, ?)',

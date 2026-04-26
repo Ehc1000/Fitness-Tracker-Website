@@ -50,3 +50,11 @@ CREATE TABLE IF NOT EXISTS user_memories (
   value TEXT,
   FOREIGN KEY(user_id) REFERENCES users(id)
 );
+
+CREATE TABLE IF NOT EXISTS sleep_logs (
+  id INTEGER PRIMARY KEY,
+  user_id INTEGER,
+  duration REAL,
+  date DATETIME,
+  FOREIGN KEY(user_id) REFERENCES users(id)
+);

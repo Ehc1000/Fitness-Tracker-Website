@@ -1,6 +1,6 @@
 import { ProgressCharts } from './components/ProgressCharts.js';
 import Quote from './components/Quote.js';
-import { getWorkouts, getCalorieLogs, initDB } from './services/db.js';
+import { getWorkouts, getCalorieLogs, initDB, addSleepLog, getSleepLogs } from './services/db.js';
 import { Chart, registerables } from 'chart.js';
 import ChatWidget from './components/ChatWidget.js';
 import WeightTracker from './components/WeightTracker.js';
@@ -104,6 +104,48 @@ export function initWaterTracker() {
   updateWaterUI();
 }
 
+export async function initSleepTracker() {
+  const sleepInput = document.getElementById('sleep-input');
+  const addSleepBtn = document.getElementById('add-sleep-btn');
+  const currentSleepEl = document.getElementById('current-sleep');
+  const sleepGoalEl = document.getElementById('sleep-goal');
+  const progressBarEl = document.getElementById('sleep-progress-bar');
+
+  if (!sleepInput || !addSleepBtn || !currentSleepEl || !progressBarEl) {
+    return;
+  }
+
+  const sleepGoal = localStorage.getItem('sleepGoal') || 8;
+  if (sleepGoalEl) sleepGoalEl.textContent = sleepGoal;
+
+  const updateSleepUI = async () => {
+    const sleepLogs = await getSleepLogs();
+    const today = new Date().toDateString();
+    const todaySleep = sleepLogs
+      .filter(log => new Date(log.date).toDateString() === today)
+      .reduce((total, log) => total + log.duration, 0);
+
+    currentSleepEl.textContent = todaySleep;
+    const progress = Math.min((todaySleep / sleepGoal) * 100, 100);
+    progressBarEl.style.width = `${progress}%`;
+  };
+
+  addSleepBtn.addEventListener('click', async () => {
+    const duration = parseFloat(sleepInput.value);
+    if (duration && duration > 0) {
+      await addSleepLog({
+        user_id: 1,
+        duration: duration,
+        date: new Date().toISOString()
+      });
+      sleepInput.value = '';
+      await updateSleepUI();
+    }
+  });
+
+  await updateSleepUI();
+}
+
 export async function main() {
   console.log('Main function started');
   try {
@@ -146,6 +188,11 @@ export async function main() {
   try {
     initWaterTracker();
   } catch (e) { console.error('Error initializing Water Tracker:', e); }
+
+  // Sleep tracker
+  try {
+    await initSleepTracker();
+  } catch (e) { console.error('Error initializing Sleep Tracker:', e); }
 
   // Weight tracker
   try {
