@@ -67,12 +67,19 @@ class ChatWidget {
 
   toggleChatWindow() {
     this.isOpen = !this.isOpen;
-    this.chatWindow.style.display = this.isOpen ? 'flex' : 'none';
-    this.chatIcon.style.display = this.isOpen ? 'none' : 'block';
+    if (this.isOpen) {
+      this.chatWindow.classList.add('open');
+      this.chatWindow.style.display = 'flex';
+      this.chatIcon.style.display = 'none';
+    } else {
+      this.chatWindow.classList.remove('open');
+      this.chatWindow.style.display = 'none';
+      this.chatIcon.style.display = 'flex';
+    }
 
     if (this.isOpen && this.firstOpen) {
       this.firstOpen = false;
-      this.addMessage("Hello! I'm your AI fitness assistant. Ask me anything about workouts, nutrition, or your fitness goals.", 'ai');
+      this.addMessage("Hello! I'm your **AI fitness assistant**. Ask me anything about workouts, nutrition, or your fitness goals.", 'ai');
       this.renderQuickReplies();
     }
   }
@@ -144,20 +151,58 @@ class ChatWidget {
       console.warn('Attempted to add empty message from:', sender);
       return;
     }
+
+    const container = document.createElement('div');
+    container.classList.add('chat-message-container', `${sender}-message-container`);
+
+    if (sender === 'ai') {
+      const avatar = document.createElement('div');
+      avatar.classList.add('bot-avatar');
+      avatar.innerHTML = '🤖';
+      container.appendChild(avatar);
+    }
+
     const messageElement = document.createElement('div');
     messageElement.classList.add('chat-message', `${sender}-message`);
-    messageElement.textContent = message;
-    this.chatWindow.querySelector('.chat-messages').appendChild(messageElement);
+    
+    // Simple markdown support
+    if (sender === 'ai') {
+      messageElement.innerHTML = this.parseMarkdown(message);
+    } else {
+      messageElement.textContent = message;
+    }
+
+    container.appendChild(messageElement);
+
+    const timestamp = document.createElement('div');
+    timestamp.classList.add('message-timestamp');
+    timestamp.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    container.appendChild(timestamp);
+
+    this.chatWindow.querySelector('.chat-messages').appendChild(container);
     this.chatWindow.querySelector('.chat-messages').scrollTop = this.chatWindow.querySelector('.chat-messages').scrollHeight;
   }
 
+  parseMarkdown(text) {
+    // Bold
+    text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    // Italic
+    text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    // Newlines
+    text = text.replace(/\n/g, '<br>');
+    return text;
+  }
+
   setTypingIndicator(isTyping) {
-    let typingIndicator = this.chatWindow.querySelector('.typing-indicator');
+    let typingIndicator = this.chatWindow.querySelector('.typing-indicator-container');
     if (isTyping) {
       if (!typingIndicator) {
         typingIndicator = document.createElement('div');
-        typingIndicator.classList.add('chat-message', 'ai-message', 'typing-indicator');
-        typingIndicator.textContent = '...';
+        typingIndicator.classList.add('chat-message-container', 'ai-message-container', 'typing-indicator-container');
+        typingIndicator.innerHTML = `
+          <div class="bot-avatar">🤖</div>
+          <div class="chat-message ai-message typing-indicator">...</div>
+        `;
         this.chatWindow.querySelector('.chat-messages').appendChild(typingIndicator);
       }
     } else if (typingIndicator) {

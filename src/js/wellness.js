@@ -115,9 +115,45 @@ export async function initSleepTracker() {
   await updateSleepUI();
 }
 
+export function initMoodTracker() {
+  const moodBtns = document.querySelectorAll('.mood-btn');
+  const moodStatus = document.getElementById('mood-status');
+  
+  if (!moodBtns.length || !moodStatus) return;
+
+  const today = new Date().toDateString();
+  const savedMoodData = JSON.parse(localStorage.getItem('dailyMood')) || {};
+
+  if (savedMoodData.date === today) {
+    const selectedBtn = document.querySelector(`.mood-btn[data-mood="${savedMoodData.mood}"]`);
+    if (selectedBtn) {
+      selectedBtn.classList.add('selected');
+      moodStatus.textContent = `You're feeling ${savedMoodData.mood} today!`;
+    }
+  }
+
+  moodBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const mood = btn.getAttribute('data-mood');
+      
+      // Update UI
+      moodBtns.forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      moodStatus.textContent = `You're feeling ${mood} today!`;
+
+      // Save to localStorage
+      localStorage.setItem('dailyMood', JSON.stringify({
+        date: today,
+        mood: mood
+      }));
+    });
+  });
+}
+
 async function main() {
   try {
     await initDB();
+    initMoodTracker();
     initWaterTracker();
     await initSleepTracker();
   } catch (err) {

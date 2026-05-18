@@ -114,6 +114,200 @@ footer {
   color: #ccc;
 }
 
+/* Greeting Section */
+#greeting-section {
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+#user-greeting {
+  font-size: 2.5rem;
+  margin-bottom: 0.2rem;
+  background: linear-gradient(to right, #4a90e2, #3498db);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#today-date {
+  font-size: 1.1rem;
+  color: #bbb;
+  margin: 0;
+}
+
+/* Summary Cards */
+.summary-cards {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.summary-card {
+  flex: 1;
+  min-width: 200px;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 1.5rem;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-5px);
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(74, 144, 226, 0.3);
+}
+
+.card-icon {
+  font-size: 2rem;
+  background-color: rgba(74, 144, 226, 0.1);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-label {
+  font-size: 0.9rem;
+  color: #bbb;
+}
+
+.card-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #f1f1f1;
+}
+
+/* Wellness Page Styles */
+.tracker-card {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+  margin-bottom: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.input-group {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.input-small {
+  width: 100px;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #2c5364;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #f1f1f1;
+}
+
+.btn-primary {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #357abd;
+}
+
+.btn-danger {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+}
+
+.progress-bar-container {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  height: 20px;
+  overflow: hidden;
+  margin: 1rem 0;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+}
+
+.progress-water { background-color: #3498db; }
+.progress-sleep { background-color: #9b59b6; }
+
+/* Mood Tracker */
+.mood-options {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.mood-btn {
+  background: none;
+  border: 2px solid transparent;
+  font-size: 2.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+  filter: grayscale(0.5);
+}
+
+.mood-btn:hover {
+  transform: scale(1.2);
+  filter: grayscale(0);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mood-btn.selected {
+  filter: grayscale(0);
+  border-color: #4a90e2;
+  background-color: rgba(74, 144, 226, 0.2);
+  transform: scale(1.1);
+}
+
+.mood-label {
+  display: block;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  color: #bbb;
+}
+
 /* Form and Input styling */
 form {
   display: flex;
@@ -302,6 +496,24 @@ li:hover {
   gap: 0.5rem;
 }
 
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2c5364;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a90e2;
+}
+
 /* Chat Widget */
 .chat-icon {
   position: fixed;
@@ -318,6 +530,7 @@ li:hover {
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(0,0,0,0.4);
   transition: transform 0.3s ease;
+  z-index: 1000;
 }
 
 .chat-icon:hover {
@@ -337,6 +550,25 @@ li:hover {
   flex-direction: column;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.18);
+  z-index: 1001;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform-origin: bottom right;
+}
+
+.chat-window.open {
+  display: flex;
+  animation: slideIn 0.3s forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5) translateY(100px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .chat-header {
@@ -370,28 +602,64 @@ li:hover {
 .chat-messages {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
+}
+
+.chat-message-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 85%;
+}
+
+.user-message-container {
+  align-self: flex-end;
+}
+
+.ai-message-container {
+  align-self: flex-start;
 }
 
 .chat-message {
   padding: 0.8rem 1rem;
-  border-radius: 10px;
-  max-width: 80%;
+  border-radius: 15px;
   word-wrap: break-word;
+  position: relative;
+  font-size: 0.95rem;
 }
 
 .user-message {
   background-color: #4a90e2;
   color: white;
-  align-self: flex-end;
-  border-bottom-right-radius: 0;
+  border-bottom-right-radius: 2px;
 }
 
 .ai-message {
   background-color: #34495e;
   color: #f1f1f1;
+  border-bottom-left-radius: 2px;
+}
+
+.bot-avatar {
+  width: 24px;
+  height: 24px;
+  background-color: #4a90e2;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.7rem;
+  margin-bottom: 4px;
+}
+
+.message-timestamp {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 4px;
+  align-self: flex-end;
+}
+
+.ai-message-container .message-timestamp {
   align-self: flex-start;
-  border-bottom-left-radius: 0;
 }
 
 .chat-footer {

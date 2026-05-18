@@ -31,6 +31,44 @@ export function updateCalorieProgressDashboard(calorieLogs) {
   }
 }
 
+export function updateDashboardSummary(workouts, calorieLogs) {
+  const greetingEl = document.getElementById('user-greeting');
+  const dateEl = document.getElementById('today-date');
+  
+  if (greetingEl) {
+    const hour = new Date().getHours();
+    let greeting = 'Good evening';
+    if (hour < 12) greeting = 'Good morning';
+    else if (hour < 18) greeting = 'Good afternoon';
+    greetingEl.textContent = `${greeting}, Fitness Fan!`;
+  }
+
+  if (dateEl) {
+    dateEl.textContent = new Date().toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  }
+
+  // Summary stats
+  const totalWorkoutsEl = document.getElementById('total-workouts-stat');
+  const totalCaloriesBurnedEl = document.getElementById('total-calories-burned-stat');
+  const avgCaloriesIntakeEl = document.getElementById('avg-calories-intake-stat');
+
+  if (totalWorkoutsEl) totalWorkoutsEl.textContent = workouts.length;
+  if (totalCaloriesBurnedEl) {
+    const totalBurned = workouts.reduce((sum, w) => sum + (w.calories_burned || 0), 0);
+    totalCaloriesBurnedEl.textContent = totalBurned.toLocaleString();
+  }
+  if (avgCaloriesIntakeEl) {
+    const totalIntake = calorieLogs.reduce((sum, l) => sum + (l.calories || 0), 0);
+    const avgIntake = calorieLogs.length > 0 ? Math.round(totalIntake / calorieLogs.length) : 0;
+    avgCaloriesIntakeEl.textContent = avgIntake.toLocaleString();
+  }
+}
+
 export async function main() {
   console.log('Main function started');
   try {
@@ -53,6 +91,9 @@ export async function main() {
 
   console.log('Workouts and calorie logs fetched', { workouts, calorieLogs });
   
+  // Update dashboard summary
+  updateDashboardSummary(workouts, calorieLogs);
+
   try {
     new ChatWidget();
   } catch (e) { console.error('Error initializing ChatWidget:', e); }

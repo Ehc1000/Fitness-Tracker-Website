@@ -23,37 +23,61 @@
       </ul>
     </nav>
     <main>
-      <div id="water-tracker-container">
+      <div id="mood-tracker-container" class="tracker-card">
+        <h2>How are you feeling today?</h2>
+        <div class="mood-options">
+          <button class="mood-btn" data-mood="great">
+            <span>🤩</span>
+            <span class="mood-label">Great</span>
+          </button>
+          <button class="mood-btn" data-mood="good">
+            <span>😊</span>
+            <span class="mood-label">Good</span>
+          </button>
+          <button class="mood-btn" data-mood="okay">
+            <span>😐</span>
+            <span class="mood-label">Okay</span>
+          </button>
+          <button class="mood-btn" data-mood="tired">
+            <span>😴</span>
+            <span class="mood-label">Tired</span>
+          </button>
+          <button class="mood-btn" data-mood="stressed">
+            <span>😫</span>
+            <span class="mood-label">Stressed</span>
+          </button>
+        </div>
+        <p id="mood-status">Select your mood to log it for today!</p>
+      </div>
+
+      <div id="water-tracker-container" class="tracker-card">
         <h2>Water Intake</h2>
         <div class="water-controls">
-          <button id="remove-water-btn">-</button>
-          <span id="water-count">0</span> / <span id="water-goal">8</span> glasses
-          <button id="add-water-btn">+</button>
+          <button id="remove-water-btn" class="btn-primary" style="width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem;">-</button>
+          <span id="water-count" style="font-size: 1.5rem; margin: 0 1rem;">0</span> / <span id="water-goal">8</span> glasses
+          <button id="add-water-btn" class="btn-primary" style="width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem;">+</button>
         </div>
-        <button id="reset-water-btn" style="margin-bottom: 1rem; background-color: #e74c3c; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer;">Reset Water</button>
-        <div id="set-water-goal-container" style="display: flex; flex-direction: column; justify-content: center; gap: 0.5rem; margin-bottom: 1rem;">
-          <label for="water-goal-input">Set New Goal:</label>
-          <div style="display: flex; gap: 0.5rem; justify-content: center;">
-            <input type="number" id="water-goal-input" placeholder="Enter new goal..." style="width: 100px; padding: 0.5rem; border-radius: 8px; border: 1px solid #2c5364; background-color: rgba(255, 255, 255, 0.1); color: #f1f1f1;" />
-            <button id="set-water-goal-btn" style="background-color: #4a90e2; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold;">Set Goal</button>
-          </div>
+        <div class="input-group" style="margin-top: 1.5rem;">
+          <input type="number" id="water-goal-input" placeholder="Goal..." class="input-small" />
+          <button id="set-water-goal-btn" class="btn-primary">Set Goal</button>
+          <button id="reset-water-btn" class="btn-danger">Reset</button>
         </div>
-        <div id="water-progress-bar-container">
-          <div id="water-progress-bar"></div>
+        <div class="progress-bar-container">
+          <div id="water-progress-bar" class="progress-bar progress-water"></div>
         </div>
         <p>Stay hydrated!</p>
       </div>
 
-      <div id="sleep-tracker-container">
+      <div id="sleep-tracker-container" class="tracker-card">
         <h2>Sleep Tracker</h2>
-        <div class="sleep-input-group" style="display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1rem;">
-          <input type="number" id="sleep-input" step="0.5" placeholder="Hours slept" style="width: 120px; padding: 0.5rem; border-radius: 8px; border: 1px solid #2c5364; background-color: rgba(255, 255, 255, 0.1); color: #f1f1f1;" />
-          <button id="add-sleep-btn" style="background-color: #4a90e2; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold;">Log Sleep</button>
+        <div class="input-group">
+          <input type="number" id="sleep-input" step="0.5" placeholder="Hours slept" class="input-small" style="width: 150px;" />
+          <button id="add-sleep-btn" class="btn-primary">Log Sleep</button>
         </div>
-        <div id="sleep-progress-container" style="margin-top: 1rem;">
+        <div id="sleep-progress-container">
           <p><span id="current-sleep">0</span> / <span id="sleep-goal">8</span> hours</p>
-          <div id="sleep-progress-bar-container" style="width: 100%; background-color: rgba(255, 255, 255, 0.1); border-radius: 10px; height: 20px; overflow: hidden;">
-            <div id="sleep-progress-bar" style="height: 100%; width: 0%; background-color: #9b59b6; border-radius: 10px; transition: width 0.5s ease-in-out;"></div>
+          <div class="progress-bar-container">
+            <div id="sleep-progress-bar" class="progress-bar progress-sleep"></div>
           </div>
         </div>
       </div>
