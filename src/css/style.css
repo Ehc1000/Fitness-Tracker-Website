@@ -531,10 +531,24 @@ li:hover {
   box-shadow: 0 4px 15px rgba(0,0,0,0.4);
   transition: transform 0.3s ease;
   z-index: 1000;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(74, 144, 226, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(74, 144, 226, 0);
+  }
 }
 
 .chat-icon:hover {
   transform: scale(1.1);
+  animation: none;
 }
 
 .chat-window {
@@ -585,12 +599,32 @@ li:hover {
   font-size: 1.2rem;
 }
 
-.close-chat {
+.chat-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.clear-chat, .close-chat {
   background: none;
   border: none;
   color: #f1f1f1;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   cursor: pointer;
+  padding: 0.2rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-chat:hover, .close-chat:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.close-chat {
+  font-size: 1.5rem;
 }
 
 .chat-body {
@@ -617,6 +651,29 @@ li:hover {
 
 .ai-message-container {
   align-self: flex-start;
+  position: relative;
+}
+
+.copy-msg-btn {
+  position: absolute;
+  top: 5px;
+  right: -30px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.ai-message-container:hover .copy-msg-btn {
+  opacity: 1;
+}
+
+.copy-msg-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .chat-message {

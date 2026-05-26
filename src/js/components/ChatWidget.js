@@ -38,7 +38,10 @@ class ChatWidget {
     this.chatWindow.innerHTML = `
       <div class="chat-header">
         <h2>AI Assistant</h2>
-        <button class="close-chat">&times;</button>
+        <div class="chat-actions">
+          <button class="clear-chat" title="Clear History">🗑️</button>
+          <button class="close-chat">&times;</button>
+        </div>
       </div>
       <div class="chat-body">
         <div class="chat-messages"></div>
@@ -57,12 +60,25 @@ class ChatWidget {
   setupEventListeners() {
     this.chatIcon.addEventListener('click', () => this.toggleChatWindow());
     this.chatWindow.querySelector('.close-chat').addEventListener('click', () => this.toggleChatWindow());
+    this.chatWindow.querySelector('.clear-chat').addEventListener('click', () => this.clearHistory());
     this.chatWindow.querySelector('#send-chat').addEventListener('click', () => this.sendMessage());
     this.chatWindow.querySelector('#chat-input').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         this.sendMessage();
       }
     });
+  }
+
+  clearHistory() {
+    if (confirm('Are you sure you want to clear your chat history?')) {
+      this.history = [];
+      const messagesContainer = this.chatWindow.querySelector('.chat-messages');
+      messagesContainer.innerHTML = '';
+      this.firstOpen = true;
+      // Re-trigger the welcome message if they clear it
+      this.addMessage("History cleared. I'm your **AI fitness assistant**. How can I help you now?", 'ai');
+      this.renderQuickReplies();
+    }
   }
 
   toggleChatWindow() {
@@ -168,6 +184,18 @@ class ChatWidget {
     // Simple markdown support
     if (sender === 'ai') {
       messageElement.innerHTML = this.parseMarkdown(message);
+      
+      const copyBtn = document.createElement('button');
+      copyBtn.classList.add('copy-msg-btn');
+      copyBtn.innerHTML = '📋';
+      copyBtn.title = 'Copy message';
+      copyBtn.onclick = () => {
+        navigator.clipboard.writeText(message).then(() => {
+          copyBtn.innerHTML = '✅';
+          setTimeout(() => copyBtn.innerHTML = '📋', 2000);
+        });
+      };
+      container.appendChild(copyBtn);
     } else {
       messageElement.textContent = message;
     }

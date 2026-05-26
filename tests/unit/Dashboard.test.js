@@ -1,4 +1,5 @@
-import { updateCalorieProgressDashboard, initWaterTracker } from '../../src/js/dashboard';
+import { updateCalorieProgressDashboard } from '../../src/js/dashboard';
+import { initWaterTracker } from '../../src/js/wellness';
 
 jest.mock('../../src/js/services/db.js');
 jest.mock('chart.js', () => {
