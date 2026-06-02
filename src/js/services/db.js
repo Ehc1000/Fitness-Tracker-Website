@@ -1,26 +1,26 @@
 import initSqlJs from 'sql.js';
 
 let SQL;
-try {
-  SQL = await initSqlJs({
-    locateFile: file => `https://sql.js.org/dist/${file}`
-  });
-} catch (err) {
-  alert(err);
-}
-
-
 let db;
 
 export async function initDB() {
+  if (db) return;
+
   try {
+    if (!SQL) {
+      SQL = await initSqlJs({
+        locateFile: file => `/${file}`
+      });
+    }
+    
     const response = await fetch('/data/database.sqlite');
     const buffer = await response.arrayBuffer();
     db = new SQL.Database(new Uint8Array(buffer));
     const schema = await fetch('/data/schema.sql').then(res => res.text());
     db.exec(schema);
   } catch (err) {
-    alert(err);
+    console.error('Database initialization failed:', err);
+    throw err;
   }
 }
 

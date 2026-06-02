@@ -151,14 +151,33 @@ export function initMoodTracker() {
 }
 
 async function main() {
+  console.log('Wellness initialization started');
+  
+  // Local storage based trackers - should work even if DB fails
+  try {
+    initMoodTracker();
+    console.log('Mood tracker initialized');
+  } catch (err) {
+    console.error('Mood tracker initialization failed:', err);
+  }
+
+  try {
+    initWaterTracker();
+    console.log('Water tracker initialized');
+  } catch (err) {
+    console.error('Water tracker initialization failed:', err);
+  }
+
+  // DB based trackers
   try {
     await initDB();
-    initMoodTracker();
-    initWaterTracker();
+    console.log('DB initialized');
     await initSleepTracker();
+    console.log('Sleep tracker initialized');
   } catch (err) {
-    console.error('Initialization failed:', err);
+    console.error('DB/Sleep tracker initialization failed:', err);
   }
 }
 
-window.addEventListener('DOMContentLoaded', main);
+// Call main directly as this is a module script
+main();
