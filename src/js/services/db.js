@@ -142,6 +142,28 @@ export async function getSleepLogs() {
   });
 }
 
+export async function addStepLog(stepLog) {
+  db.run(
+    'INSERT INTO step_logs (user_id, steps, date) VALUES (?, ?, ?)',
+    [stepLog.user_id, stepLog.steps, stepLog.date]
+  );
+}
+
+export async function getStepLogs() {
+  const res = db.exec('SELECT * FROM step_logs ORDER BY date DESC');
+  if (res.length === 0) {
+    return [];
+  }
+  const columns = res[0].columns;
+  return res[0].values.map(row => {
+    const stepLog = {};
+    columns.forEach((col, i) => {
+      stepLog[col] = row[i];
+    });
+    return stepLog;
+  });
+}
+
 export async function addUserMemory(userId, key, value) {
   db.run(
     'INSERT INTO user_memories (user_id, key, value) VALUES (?, ?, ?)',

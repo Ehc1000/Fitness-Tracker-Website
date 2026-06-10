@@ -81,6 +81,20 @@
           </div>
         </div>
       </div>
+
+      <div id="step-tracker-container" class="tracker-card">
+        <h2>Step Tracker</h2>
+        <div class="input-group">
+          <input type="number" id="step-input" step="100" placeholder="Steps taken" class="input-small" style="width: 150px;" />
+          <button id="add-step-btn" class="btn-primary">Log Steps</button>
+        </div>
+        <div id="step-progress-container">
+          <p><span id="current-steps">0</span> / <span id="step-goal">10000</span> steps</p>
+          <div class="progress-bar-container">
+            <div id="step-progress-bar" class="progress-bar progress-steps"></div>
+          </div>
+        </div>
+      </div>
     </main>
     <footer>
       <p>&copy; 2025 Fitness Tracker</p>

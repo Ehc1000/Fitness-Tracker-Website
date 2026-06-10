@@ -1,4 +1,4 @@
-import { initDB, addSleepLog, getSleepLogs } from './services/db.js';
+import { initDB, addSleepLog, getSleepLogs, addStepLog, getStepLogs } from './services/db.js';
 
 export function initWaterTracker() {
   const waterCountEl = document.getElementById('water-count');
@@ -115,6 +115,48 @@ export async function initSleepTracker() {
   await updateSleepUI();
 }
 
+export async function initStepTracker() {
+  const stepInput = document.getElementById('step-input');
+  const addStepBtn = document.getElementById('add-step-btn');
+  const currentStepsEl = document.getElementById('current-steps');
+  const stepGoalEl = document.getElementById('step-goal');
+  const progressBarEl = document.getElementById('step-progress-bar');
+
+  if (!stepInput || !addStepBtn || !currentStepsEl || !progressBarEl) {
+    return;
+  }
+
+  const stepGoal = localStorage.getItem('stepGoal') || 10000;
+  if (stepGoalEl) stepGoalEl.textContent = stepGoal;
+
+  const updateStepUI = async () => {
+    const stepLogs = await getStepLogs();
+    const today = new Date().toDateString();
+    const todaySteps = stepLogs
+      .filter(log => new Date(log.date).toDateString() === today)
+      .reduce((total, log) => total + log.steps, 0);
+
+    currentStepsEl.textContent = todaySteps.toLocaleString();
+    const progress = Math.min((todaySteps / stepGoal) * 100, 100);
+    progressBarEl.style.width = `${progress}%`;
+  };
+
+  addStepBtn.addEventListener('click', async () => {
+    const steps = parseInt(stepInput.value);
+    if (steps && steps > 0) {
+      await addStepLog({
+        user_id: 1,
+        steps: steps,
+        date: new Date().toISOString()
+      });
+      stepInput.value = '';
+      await updateStepUI();
+    }
+  });
+
+  await updateStepUI();
+}
+
 export function initMoodTracker() {
   const moodBtns = document.querySelectorAll('.mood-btn');
   const moodStatus = document.getElementById('mood-status');
@@ -174,8 +216,10 @@ async function main() {
     console.log('DB initialized');
     await initSleepTracker();
     console.log('Sleep tracker initialized');
+    await initStepTracker();
+    console.log('Step tracker initialized');
   } catch (err) {
-    console.error('DB/Sleep tracker initialization failed:', err);
+    console.error('DB/Sleep/Step tracker initialization failed:', err);
   }
 }
 

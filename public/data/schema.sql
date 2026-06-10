@@ -58,3 +58,11 @@ CREATE TABLE IF NOT EXISTS sleep_logs (
   date DATETIME,
   FOREIGN KEY(user_id) REFERENCES users(id)
 );
+
+CREATE TABLE IF NOT EXISTS step_logs (
+  id INTEGER PRIMARY KEY,
+  user_id INTEGER,
+  steps INTEGER,
+  date DATETIME,
+  FOREIGN KEY(user_id) REFERENCES users(id)
+);

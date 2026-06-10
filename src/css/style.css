@@ -955,4 +955,54 @@ li:hover {
   justify-content: space-between;
 }
 
+/* Quick Add Styles */
+.food-icons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 15px;
+  margin-top: 1rem;
+}
+
+.quick-add-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #f1f1f1;
+}
+
+.quick-add-btn:hover {
+  background: rgba(74, 144, 226, 0.2);
+  transform: translateY(-3px);
+  border-color: #4a90e2;
+}
+
+.quick-add-btn img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 5px;
+}
+
+.quick-add-btn span {
+  font-size: 0.8rem;
+}
+
+/* Step Tracker Styles */
+.step-input-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.progress-steps {
+  background-color: #27ae60;
+}
+
 

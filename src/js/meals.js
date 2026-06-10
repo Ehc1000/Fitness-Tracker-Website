@@ -69,6 +69,27 @@ async function main() {
     renderCalorieLogs(calorieLogs);
     loadCalorieGoal();
 
+    const quickAddBtns = document.querySelectorAll('.quick-add-btn');
+    quickAddBtns.forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const foodName = btn.dataset.food;
+        const calories = parseInt(btn.dataset.calories);
+        loader.hidden = false;
+        try {
+          await addCalorieLog({
+            user_id: 1,
+            food_item: foodName,
+            calories: calories,
+            date: new Date().toISOString()
+          });
+          calorieLogs = await getCalorieLogs();
+          renderCalorieLogs(calorieLogs);
+        } finally {
+          loader.hidden = true;
+        }
+      });
+    });
+
     clearAllBtn.addEventListener('click', async () => {
       if (confirm('Are you sure you want to clear all calorie logs for today?')) {
         loader.hidden = false;
