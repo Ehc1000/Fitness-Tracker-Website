@@ -102,7 +102,7 @@ export async function main() {
   try {
     const quote = new Quote();
     const quoteElement = quote.render();
-    document.querySelector('main').prepend(quoteElement);
+    document.getElementById('quote-container').appendChild(quoteElement);
   } catch (e) { console.error('Error initializing Quote:', e); }
 
   // Calorie progress
